@@ -1,0 +1,220 @@
+
+1. jsp_pj_ict05 플젝 생성 : new > Dynamic Web Project > Generate web.xml 체크
+
+2. jar 파일 추가 : WEB-INF/lib/5개 jar 파일 추가
+
+==== JSP MVC 패턴 개발 버전 ====
+
+3. 각각의 폴더, jsp 파일을 생성후 각각의 jsp 소스를 붙여넣는다.
+
+webapp(루트)
+/admin => 관리자
+/common => 공통
+/customer => 고객
+/resources > css, js, images => 폴더 만들기
+/templet > main.jsp 복사해서 넣어둔다.
+
+
+4. 헤더, 푸터를 작성 후 include(header.jsp, footer.jsp)
+ 
+/common > header.jsp => 경로 수정
+/common > footer.jsp
+
+나중에작성
+/common > setting.jsp 기본 작성 이후 => path 설정 => EL, JSTL 배운후
+
+
+
+*****************[ 이미지 가져오기 ] *********************
+<!-- 1. https://fontawesome.com/에서 인증하는 방법  
+             1-1. start for free
+             1-2. 이메일 입력 -> send kit Embed code > 링크 보냄 ->
+             1-3. 회원가입, 비밀번호 직접 설정
+             1-3. 웹사이트 > kits 메뉴 클릭 > 제공되는 key 복사(xxxxxxxx.js)
+             
+             https://fontawesome.com/search 이동
+             검색어에서 원하는 로고 입력하거나 선택
+      2. 이미지 사용가능 
+-->
+******************************* *********************
+
+5. /common > main.jsp
+  main.html 복사한후 헤더 푸터 include 
+  
+  실행 : http://localhost/jsp_pj_ict05/common/main.jsp
+   => 헤더 / 푸터 / 이미지 확인
+   main.jsp 복사해서 템플릿화 => sample.jsp로 붙여넣고, header, footer include시킨다. css 경로 수정
+
+==============================================================
+
+6. customer > join > join.jsp  joinAction.jsp
+sample.jsp를 참고해서 join.jsp joinAction.jsp를 작성
+header, footer include시킨다. css 경로 수정한다
+resources > css > customer > join.css 작성
+resources > js > customer > join.js 작성
+
+
+==============================================================
+
+[ BACKEND : 	] => Java Resources > src/main/java 하위에 작성
+
+테이블 생성 후 DTO(VO : Value Object)를 만드는걸 권장.
+
+
+1. Controller - 패키지 : pj.mvc.jsp.controller
+                       - new Servlet >  CustomerController
+                       @WebServlet("*.do")  <= 진입시 .do인 요청만 받겠다는 의미, 반드시  do가 아니어도 됨.
+                       			customer : *.do   |     admin :  *.ad 
+
+2. Model(DTO + DAO)
+	DTO	 - pj.mvc.jsp.dto - CustomerDTO.java
+				
+	DAO	 / DAOImpl -    패키지 : pj.mvc.jsp.dao
+						- CustomerDAO.java : 인터페이스
+						- CustomerDAOImpl.java : 인터페이스 구현
+
+3. Service / ServiceImpl -  패키지 : pj.mvc.jsp.service
+						- CustomerService.java : 인터페이스
+						- CustomerServiceImpl.java : 인터페이스 구현
+
+4. header.jsp	 => 컨트롤러에서 링크가 요청될 때 do로 연결				
+<li><a href="/jsp_pj_ict0/join.do">JOIN</a></li>
+
+=====================================
+
+5. join.jsp
+<link rel="stylesheet"  href="/jsp_pj_ict05/resources/css/common/header.css">
+<link rel="stylesheet"  href="/jsp_pj_ict05/resources/css/common/footer.css">
+<link rel="stylesheet"  href="/jsp_pj_ict05/resources/css/customer/join.css">
+<script src="https://kit.fontawesome.com/b435fbc087.js"  crossorigin="anonymous"></script>
+<script src="/jsp_pj_ict05/resources/js/customer/main.js"  defer></script>			
+
+<%@ include file="../../common/header.jsp"  %>
+<%@ include file="../../common/footer.jsp"  %>
+
+
+
+=====================================
+
+6. 계정생성(System 계정에서) 1. ~ 2.
+-- 오라클 설치(SYSTEM/ORACLE) 
+-- SYSTEM계정에서 계정 생성
+-- hr : sql developer-system_01계정에서 계정생성안해도 되고, 3.락해제 5.비밀번호변경만 한다.
+
+-- 1. 계정생성 : jsp_pj_ict05 계정생성
+-- create user <계정이름> identified by <계정암호> default tablespace users;
+create user  jsp_pj_ict05 identified by tiger default tablespace users;
+
+-- 2. 사용자 권한 부여
+-- grant [시스템 권한] to [계정];
+grant connect, resource, create view to jsp_pj_ict05;
+
+
+-- 3. 락 해제
+-- alter user <계정이름> account unlock;
+alter user jsp_pj_ict05 account unlock;
+
+-- 4. 계정 잘못만든 경우 계정, 객체 삭제하기 
+-- drop user <계정이름> cascade;
+-- drop user jsp_pj_ict05 cascade; 
+
+-- 5. 패스워드 변경
+-- alter user <계정이름> identified by <패스워드>;
+-- alter user jsp_pj_ict05 identified by tiger; 
+
+--DBeaver에서는 Oracle 하위 Schemas를 새로고침하면 자동으로 생성된 계정이 활성화 된다.
+
+//////////////////////////////////////////////////////
+
+7. 테이블 생성
+-- jsp_pj_ict05 계정에서 작업
+-- 회원정보 테이블
+DROP TABLE mvc_customer_tbl  CASCADE CONSTRAINTS;
+CREATE TABLE mvc_customer_tbl(
+    user_id         VARCHAR2(20)    PRIMARY KEY,    -- ID
+	user_password   VARCHAR2(20)    NOT NULL,          -- 비밀번호
+	user_name   VARCHAR2(50)    NOT NULL,          -- 이름
+	user_birthday   DATE            NOT NULL,          -- 생년월일    
+	user_address    VARCHAR2(50)    NOT NULL,          -- 주소
+	user_hp         VARCHAR2(13),                      -- 핸드폰      
+	user_email      VARCHAR2(50)    NOT NULL,          -- 이메일
+	user_regdate    TIMESTAMP       DEFAULT sysdate    -- 가입일
+); 
+
+8. Servers > context.xml
+ 	<!-- 커넥션풀(DBCP: DataBase Connection Pool 방식) => Servers > Tomcat > context.xml
+    	=> 톰캣 재설치시 추가해야 하며, 안하면 DB연결이 안된다.
+     -->
+      <Resource
+    	author="Container"
+    	name="jdbc/jsp_pj_ict05"
+    	type="javax.sql.DataSource"
+    	driverClassName="oracle.jdbc.driver.OracleDriver"
+    	url = "jdbc:oracle:thin:@localhost:1521:xe"
+		username = "jsp_pj_ict05"
+		password = "tiger"
+		maxActive="7"
+		maxWait="1000"
+   />                                    
+                                        
+                                        
+/////   [ jstl 반영 ] /////////////////////////////////////////////////
+
+기존소스 => old 폴더를 만들고, common, customer, resources, admin 폴더를 붙여넣는다.
+
+
+common 폴더에 setting.jsp 만들고 작성
+ /common/header.jsp
+ /common/footer.jsp
+ 
+- WEB-INF/lib 폴더에 standard.jar  jstl.jar 추가하지 않으면 setting.jsp 오류
+--------------------------------------------------------------------------
+ 
+- main.jsp ->  <%@ include file="setting.jsp" %> 후 ${path} 지정
+- header.jsp ->  <%@ include file="setting.jsp" %> 후 ${path} 지정
+- join.jsp ->  <%@ include file="/common/setting.jsp" %> 후 ${path} 지정
+- joinAction.jsp ->  <%@ include file="/common/setting.jsp" %> 후 ${path} 지정
+   <c:if test="${insertCnt == 0}">  </c:if>
+
+- idConfirmAction.jsp ->  <%@ include file="/common/setting.jsp" %> 후 ${path} 지정
+
+   
+- login.jsp ->  <%@ include file="/common/setting.jsp" %> 후 ${path} 지정
+- loginAction.jsp ->  <%@ include file="/common/setting.jsp" %> 후 ${path} 지정
+ 					<c:if test="${sessionScope.sessionID == null}">  </c:if>
+ 					<c:if test="${sessionScope.sessionID != null}">  </c:if>
+ 					${sessionScope.sessionID}
+
+- deleteCustomer.jsp
+   <%@ include file="/common/setting.jsp" %> 후 ${path} 지정
+   ${sessionScope.sessionID}
+   
+- deleteCustomerAction.jsp
+    <%@ include file="/common/setting.jsp" %> 후 ${path} 지정
+	<c:if test="${deleteCnt == 1}">  </c:if>
+
+- modifyCustomer.jsp
+   <%@ include file="/common/setting.jsp" %> 후 ${path} 지정
+   ${sessionScope.sessionID}
+   
+- modifyDetailAction.jsp
+   <%@ include file="/common/setting.jsp" %> 후 ${path} 지정
+	${dto.getId()}....
+	
+	<c:if test="${dto.getHp() != null}">	
+		<c:set var="hpArr"   value="${fn:split(dto.getHp(), '-')}"  />
+	</c:if>
+	
+	<c:set var="emailArr"  value="${fn:split(dto.getEmail(), '@')}"  />
+
+- modifyCustomerAction.jsp
+ 	<%@ include file="/common/setting.jsp" %> 후 ${path} 지정
+	<c:if test="${updateCnt == 1}">  </c:if>
+
+
+
+
+
+
+
+ 
