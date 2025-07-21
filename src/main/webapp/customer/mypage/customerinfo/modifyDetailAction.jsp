@@ -49,15 +49,15 @@
 									out.print(selectCnt);
 									CustomerDTO dto = (CustomerDTO)request.getAttribute("dto");
 									
-									
 									if(selectCnt == 1){
-										
 								%>
 								<table>
 									<tr>
 										<th> 아이디 * </th>
 										<td>
-											<%= dto.getUser_id() %>
+											
+											<input type="text" class="input" name="user_id" value="<%= dto.getUser_id() %>"
+											size="20" disabled>
 										</td>
 									</tr>
 									

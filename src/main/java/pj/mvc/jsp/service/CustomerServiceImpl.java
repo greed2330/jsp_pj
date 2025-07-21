@@ -150,6 +150,27 @@ public class CustomerServiceImpl implements CustomerService{
 	@Override
 	public void modifyCustomerAction(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		CustomerDAO dao = CustomerDAOImpl.getInstance();
+		CustomerDTO dto = new CustomerDTO();
 		
+		String hp1 = request.getParameter("user_hp1");
+		String hp2 = request.getParameter("user_hp2");
+		String hp3 = request.getParameter("user_hp3");
+		String hp = hp1 + "-" + hp2 + "-" + hp3;
+		
+		String email1 = request.getParameter("user_email1");
+		String email2 = request.getParameter("user_email2");
+		String email = email1 + "@" + email2;
+		
+		dto.setUser_id(request.getParameter("user_id"));
+		dto.setUser_password(request.getParameter("user_password"));
+		dto.setUser_name(request.getParameter("user_name"));
+		dto.setUser_birthday(Date.valueOf(request.getParameter("user_birthday")));
+		dto.setUser_address(request.getParameter("user_address"));
+		dto.setUser_hp(hp);
+		dto.setUser_email(email);
+		
+		int updateCnt = dao.updateCustomer(dto);
+		request.setAttribute("updateCnt", updateCnt);
 	}
 }

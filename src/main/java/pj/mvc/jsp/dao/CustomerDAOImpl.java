@@ -211,6 +211,9 @@ public class CustomerDAOImpl implements CustomerDAO{
 	// 회원정보 수정 처리
 	@Override
 	public int updateCustomer(CustomerDTO dto) {
-		return 0;
+		int updateCnt = 0;
+		
+		
+		return updateCnt;
 	}
 }
