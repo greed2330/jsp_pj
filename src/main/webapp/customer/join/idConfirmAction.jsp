@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <!-- 반응형 웹 -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>main</title>
+<title>아이디 중복 확인</title>
 
 <!-- css -->
 <link rel="stylesheet" href="/jsp_pj_ict05/resources/css/common/header.css">
@@ -39,7 +39,7 @@
 					<div id="s2_inner">
 						<div class="join">
 							<form name="loginform" action="loginAction.do" method="post"
-							onsubmit="return loginCheck()">
+							onsubmit="return signInCheck()">
 								<%
 									int selectCnt = (Integer)request.getAttribute("selectCnt");
 									String strId = (String)request.getAttribute("strId");
@@ -87,7 +87,7 @@
 											<td colspan="2" style="border-bottom: none">
 												<br> 
 												<div align="right">
-													<input class="inputButton" type="button" value="확인" onclick="setUserid('<%=strId%>')">
+													<input class="inputButton" type="button" value="확인" onclick="setUserid('<%= strId %>')">
 												</div>
 											</td>
 										</tr>

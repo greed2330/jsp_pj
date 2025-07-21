@@ -99,7 +99,22 @@ public class CustomerController extends HttpServlet {
 			viewPage = "/common/main.jsp";
 		}
 		
-		//[회원수정]
+		//[회원탈퇴]------------------------------
+		//회원탈퇴 - 인증화면
+		else if(url.equals("/deleteCustomer.do")) {
+			System.out.println("<<< url ==> /deleteCustomer.do >>>");
+			
+			viewPage = "/customer/mypage/customerinfo/deleteCustomer.jsp";
+		}
+		
+		//회원탈퇴 처리
+		else if(url.equals("/deleteCustomerAction.do")) {
+			System.out.println("<<< url ==> /deleteCustomerAction.do >>>");
+			csi.deleteCustomerAction(request, response);
+			viewPage = "/customer/mypage/customerinfo//deleteCustomerAction.jsp";
+		}
+		
+		//[회원수정]------------------------------
 		// 회원수정- 인증화면
 		
 		else if(url.equals("/modifyCustomer.do")) {
@@ -114,13 +129,14 @@ public class CustomerController extends HttpServlet {
 			csi.modifyDetailAction(request, response);
 			viewPage = "/customer/mypage/customerinfo/modifyDetailAction.jsp";
 		}
-			
 		
+		//회원수정 처리
 		else if(url.equals("/modifyCustomerAction.do")) {
 			System.out.println("<<< url ==> /modifyDetailAction.do >>>");
 			csi.modifyCustomerAction(request, response);
 			viewPage = "/customer/mypage/customerinfo/modifyCustomerAction.jsp";
 		}
+		
 		
 		
 		//RequestDispatcher : 서블릿 또는 JSP 요청을 받은 후, 다른 컴포넌트로 요청을 위임하는 클래스이다.

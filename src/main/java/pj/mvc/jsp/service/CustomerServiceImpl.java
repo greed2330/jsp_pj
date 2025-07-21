@@ -116,6 +116,32 @@ public class CustomerServiceImpl implements CustomerService{
 	public void deleteCustomerAction(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		System.out.println("CustomerServiceImpl - deleteCustomerAction()");
+		
+		//3단계. 화면에서 입력받은 값을 가져온다 - 비밀번호 / 세션(ㅑㅇ)
+		String sessionID = (String)request.getSession().getAttribute("sessionID");
+		String strPassword = request.getParameter("user_password");
+		
+		//4단계. 싱글톤 방식으로 DAO 객체 생성.
+		CustomerDAO dao = CustomerDAOImpl.getInstance();
+		
+		//5-1단계. 회원정보 인증처리
+		int selectCnt = dao.idPasswordChk(sessionID, strPassword);
+		
+		int deleteCnt = 0;
+		//인증 성공 시
+		
+		if(selectCnt == 1) {
+			// 5-2단계. 탈퇴처리
+			deleteCnt = dao.deleteCustomer(sessionID);
+			if(deleteCnt == 1) {
+				// 세션 삭제 => 주의
+				request.getSession().invalidate();
+			}
+		}
+		
+		//6단계. jsp로 처리결과 전달
+		request.setAttribute("selectCnt", selectCnt);
+		request.setAttribute("deleteCnt", deleteCnt);
 	}
 
 	// 회원 정보 인증 처리 및 상세페이지 조회
@@ -150,25 +176,30 @@ public class CustomerServiceImpl implements CustomerService{
 	@Override
 	public void modifyCustomerAction(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		System.out.println("CustomerServiceImpl - modifyCustomerAction()");
 		CustomerDAO dao = CustomerDAOImpl.getInstance();
 		CustomerDTO dto = new CustomerDTO();
 		
-		String hp1 = request.getParameter("user_hp1");
+		String hp1 = request.getParameter("user_hp1");	//input 박스에서 입력받지 않고 세션ID사용
 		String hp2 = request.getParameter("user_hp2");
 		String hp3 = request.getParameter("user_hp3");
-		String hp = hp1 + "-" + hp2 + "-" + hp3;
+		String hp ="";
+		if(!hp1.equals("") && !hp2.equals("") && !hp3.equals("")) {
+			hp = hp1 + "-" + hp2 + "-" + hp3;
+		}
 		
 		String email1 = request.getParameter("user_email1");
 		String email2 = request.getParameter("user_email2");
 		String email = email1 + "@" + email2;
 		
-		dto.setUser_id(request.getParameter("user_id"));
+		dto.setUser_id((String)request.getSession().getAttribute("sessionID"));
 		dto.setUser_password(request.getParameter("user_password"));
 		dto.setUser_name(request.getParameter("user_name"));
 		dto.setUser_birthday(Date.valueOf(request.getParameter("user_birthday")));
 		dto.setUser_address(request.getParameter("user_address"));
 		dto.setUser_hp(hp);
 		dto.setUser_email(email);
+		dto.setUser_regdate(new Timestamp(System.currentTimeMillis()));
 		
 		int updateCnt = dao.updateCustomer(dto);
 		request.setAttribute("updateCnt", updateCnt);

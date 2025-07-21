@@ -55,7 +55,6 @@
 									<tr>
 										<th> 아이디 * </th>
 										<td>
-											
 											<input type="text" class="input" name="user_id" value="<%= dto.getUser_id() %>"
 											size="20" disabled>
 										</td>
@@ -64,7 +63,7 @@
 									<tr>
 										<th> 비밀번호 * </th>
 										<td>
-											<input type="password" class="input" name="user_password" 
+											<input type="password" class="input" name="user_password"
 											size="20" placeholder="공백없이 20자 이내로 작성" required>
 										</td>
 									</tr>

@@ -92,7 +92,7 @@
 											
 											<tr>
 												<th colspan="2">
-												<span style=""><b>sessionID</b></span>
+												<span style=""><b><%= sessionID %>님 반갑습니다.</b></span>
 												 </th>
 											</tr>
 											

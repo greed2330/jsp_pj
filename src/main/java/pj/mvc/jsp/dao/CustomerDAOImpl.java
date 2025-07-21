@@ -153,13 +153,33 @@ public class CustomerDAOImpl implements CustomerDAO{
 	// 회원 정보 인증처리 및 탈퇴처리
 	@Override
 	public int deleteCustomer(String strId) {
-		return 0;
+		int deleteCnt = 0;
+		String query = """
+				DELETE FROM mvc_customer_tbl 
+				WHERE user_id = ?
+				""";
+		try {
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, strId);
+			deleteCnt = pstmt.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(conn != null) conn.close();
+				if(pstmt != null) pstmt.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return deleteCnt;
 	}
 
 	// 회원 정보 인증 처리 및 상세페이지 조회
 	@Override
 	public CustomerDTO getCustomerDetail(String strId) {
-		System.out.println("CustomerDAOImpl - useridCheck()");
+		System.out.println("CustomerDAOImpl - getCustomerDetail()");
 		
 		//1 DTO 생성
 		CustomerDTO dto = new CustomerDTO();
@@ -169,11 +189,8 @@ public class CustomerDAOImpl implements CustomerDAO{
 			conn = dataSource.getConnection();
 			
 			// 3. SQL 작성 => strId(sessionID)와 일치하는 데이터가 존재하는지 확인
-			String query = """
-					SELECT * FROM mvc_customer_tbl 
-					WHERE user_id = ?
-					""";
-			
+			String query = "SELECT * FROM mvc_customer_tbl "
+					  +"WHERE user_id = ?";
 			//4. 실행
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, strId);
@@ -213,7 +230,45 @@ public class CustomerDAOImpl implements CustomerDAO{
 	public int updateCustomer(CustomerDTO dto) {
 		int updateCnt = 0;
 		
-		
+		try {
+					
+			String query = """
+					UPDATE mvc_customer_tbl
+					SET user_password = ?, 
+					user_name = ?, 
+					user_birthday = ?,
+					user_address = ?,
+					user_hp = ?, 
+					user_email = ?, 
+					user_regdate = ?
+					WHERE user_id = ?
+					""";
+			
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, dto.getUser_password());
+			pstmt.setString(2, dto.getUser_name());
+			pstmt.setDate(3, dto.getUser_birthday());
+			pstmt.setString(4, dto.getUser_address());
+			pstmt.setString(5, dto.getUser_hp());
+			pstmt.setString(6, dto.getUser_email());
+			pstmt.setTimestamp(7, dto.getUser_regdate());
+			pstmt.setString(8, dto.getUser_id());
+			System.out.println(dto);
+			
+			//실행
+			updateCnt = pstmt.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt != null)pstmt.close();
+				if(conn != null)conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		return updateCnt;
 	}
 }

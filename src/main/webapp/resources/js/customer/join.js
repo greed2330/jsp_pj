@@ -33,13 +33,23 @@ function signInCheck(){
 	
 	
 	/* 2-2. 중복확인 버튼 클릭하지 않는 경우 "중복체크 해주세요!"*/
-	if(document.inputform.hiddenUserid.value){
+	if(!document.inputform.hiddenUserid.value){
 		alert("중복확인 해주세요!!");
 		document.inputform.dubChk.focus();
 		return false;
 	}
 	
 	//비밀번호 불일치 => 과제
+	const userPassword = document.inputform.user_password.value;
+	const rePassword = document.inputform.re_password.value;
+	
+	if(userPassowrd != rePassword){
+		alert("비밀번호가 일치하지 않습니다.");
+		document.inputform.user_password.focus();
+		return false;
+	}
+	
+	return true;
 }
 
 //3. 사용가능한 ID를 찾은 경우 => 자식찾에서 부모창으로 userid전달
@@ -58,8 +68,8 @@ self.close(); //자식창 닫기
 }*/
 
 function setUserid(userId){
-	alert(userId);
-	opener.document.inputform.user_id.value= userId;
+	/*alert(userId);*/
+	opener.document.inputform.user_id.value = userId;
 	opener.document.inputform.hiddenUserid.value = "1";
 	self.close();
 }
