@@ -160,7 +160,56 @@ public class CustomerDAOImpl implements CustomerDAO{
 	// 회원 정보 인증 처리 및 상세페이지 조회
 	@Override
 	public CustomerDTO getCustomerDetail(String strId) {
-		return null;
+		System.out.println("CustomerDAOImpl - useridCheck()");
+		
+		//1 DTO 생성
+		CustomerDTO dto = new CustomerDTO();
+		ResultSet rs = null;
+		try {
+			// 2. DB 연결 => 데이터베이스 커넥션 생성
+			conn = dataSource.getConnection();
+			
+			// 3. SQL 작성 => strId(sessionID)와 일치하는 데이터가 존재하는지 확인
+			String query = """
+					SELECT * FROM mvc_customer_tbl 
+					WHERE user_id = ?
+					""";
+			
+			//4. 실행
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, strId);
+			
+			// 5-1. ResultSet에 존재하면
+			if(rs.next()) {
+				dto.setUser_id(rs.getString("user_id"));
+				dto.setUser_password(rs.getString("user_password"));
+				dto.setUser_name(rs.getString("user_name"));
+				dto.setUser_birthday(rs.getDate("user_birthday"));
+				dto.setUser_address(rs.getString("user_address"));
+				dto.setUser_hp(rs.getString("user_hp"));
+				dto.setUser_email(rs.getString("user_email"));
+				dto.setUser_regdate(rs.getTimestamp("user_regdate"));
+				
+			}
+			// 502. ResultSet를 읽어서 CustomerDTO에 setter로 담는다.
+			
+			if(rs.next()) {
+				
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(conn != null) conn.close();
+				if(pstmt != null) pstmt.close();
+				if(rs != null) pstmt.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return dto;
 	}
 
 	// 회원정보 수정 처리

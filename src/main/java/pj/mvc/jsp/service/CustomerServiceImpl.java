@@ -122,8 +122,27 @@ public class CustomerServiceImpl implements CustomerService{
 	@Override
 	public void modifyDetailAction(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		//3단계. 화면에서 입력받은 값을 가져온다 - 비밀번호 / 세션(ㅑㅇ)
+		String sessionID = (String)request.getSession().getAttribute("sessionID");
+		String strPassword = request.getParameter("user_password");
 		
+		//4단계. 싱글톤 방식으로 DAO 객체 생성.
+		CustomerDAO dao = CustomerDAOImpl.getInstance();
+		
+		//5-1단계. 회원정보 인증처리
+		int selectCnt = dao.idPasswordChk(sessionID, strPassword);
+		CustomerDTO dto = null;
+		//인증 성공 시
+		if(selectCnt == 1) {
+			// 5-2단계. 상세페이지 조회
+			dto = dao.getCustomerDetail(sessionID);
+		}
+		
+		//6단계. jsp로 처리결과 전달
+		request.setAttribute("selectCnt", selectCnt);
+		request.setAttribute("dto", dto);
 	}
+	
 	
 	// 회원정보 수정 처리
 	@Override
