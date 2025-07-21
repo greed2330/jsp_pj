@@ -1,0 +1,36 @@
+@charset "UTF-8";
+
+.footer_info{
+	position: relative;
+	bottom: 0;
+	width: 100%;
+	height: auto;
+	background-color: black;
+	opacity: 0.88;
+	align-items: fixed-end;
+	margin-top: 100px;
+	padding: 10px 0px 20px 20px;
+}
+
+.footer_link li{
+	display: inline-block;
+	list-style: none;
+	padding: 0px 10px 0px 10px;
+	margin-left: -45px;
+	margin-right: 50px;
+}
+
+.footer_link li a{
+	text-decoration: none;	/* 밑줄제거 */
+	color: white;
+}
+
+.footer_info_customer{
+	background-color: black;
+	opacity: 0.88;
+	color: white;
+}
+
+.footer_info_company{
+	color: gray;
+}

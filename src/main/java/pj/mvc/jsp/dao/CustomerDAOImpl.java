@@ -78,8 +78,6 @@ public class CustomerDAOImpl implements CustomerDAO{
 	@Override
 	public int insertCustomer(CustomerDTO dto) {
 		System.out.println("CustomerDAOImpl - insertCustomer()");
-		
-		
 		int insertCnt = 0;
 		
 		try {
@@ -153,6 +151,7 @@ public class CustomerDAOImpl implements CustomerDAO{
 	// 회원 정보 인증처리 및 탈퇴처리
 	@Override
 	public int deleteCustomer(String strId) {
+		System.out.println("CustomerDAOImpl - deleteCustomer()");
 		int deleteCnt = 0;
 		String query = """
 				DELETE FROM mvc_customer_tbl 
