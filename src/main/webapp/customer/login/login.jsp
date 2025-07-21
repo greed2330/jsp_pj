@@ -18,7 +18,7 @@
 
 <!-- (3-3-2). 자바스크립트 소스 연결 -->
 <!-- defer : html을 다 읽은 후에 자바스크립트를 실행한다. 페이지가 모두 로드된 후에 실행된다. -->
-<script src="/jsp_pj_ict05/resources/js/customer/login.js" defer></script>
+<script src="/jsp_pj_ict05/resources/js/common/main.js" defer></script>
 
 </head>
 <body>

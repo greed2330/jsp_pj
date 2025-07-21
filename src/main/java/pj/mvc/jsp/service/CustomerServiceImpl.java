@@ -122,6 +122,8 @@ public class CustomerServiceImpl implements CustomerService{
 	@Override
 	public void modifyDetailAction(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		System.out.println("CustomerServiceImpl - modifyDetailAction()");
+		
 		//3단계. 화면에서 입력받은 값을 가져온다 - 비밀번호 / 세션(ㅑㅇ)
 		String sessionID = (String)request.getSession().getAttribute("sessionID");
 		String strPassword = request.getParameter("user_password");

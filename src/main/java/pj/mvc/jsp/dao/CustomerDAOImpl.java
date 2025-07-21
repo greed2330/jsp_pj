@@ -119,8 +119,7 @@ public class CustomerDAOImpl implements CustomerDAO{
 	// 로그인 처리 / 회원정보 인증(수정, 탈퇴)
 	@Override
 	public int idPasswordChk(String strId, String strPassword) {
-		int SelectCnt = 0;
-		System.out.println("CustomerDAOImpl - useridCheck()");
+		System.out.println("CustomerDAOImpl - idPasswordChk()");
 		int selectCnt = 0;
 		String query = """
 				SELECT * FROM mvc_customer_tbl 

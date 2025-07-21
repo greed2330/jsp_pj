@@ -104,15 +104,14 @@ public class CustomerController extends HttpServlet {
 		
 		else if(url.equals("/modifyCustomer.do")) {
 			System.out.println("<<< url ==> /modifyCustomer.do >>>");
-			csi = new CustomerServiceImpl();
-					
+			
 			viewPage = "/customer/mypage/customerinfo/modifyCustomer.jsp";
 		}
 		
 		//회원정보 수정 클릭 시
 		else if(url.equals("/modifyDetailAction.do")) {
 			System.out.println("<<< url ==> /modifyDetailAction.do >>>");
-			csi.modifyCustomerAction(request, response);
+			csi.modifyDetailAction(request, response);
 			viewPage = "/customer/mypage/customerinfo/modifyDetailAction.jsp";
 		}
 			
