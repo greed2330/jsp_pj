@@ -179,6 +179,7 @@ public class CustomerDAOImpl implements CustomerDAO{
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, strId);
 			
+			rs = pstmt.executeQuery();
 			// 5-1. ResultSet에 존재하면
 			if(rs.next()) {
 				dto.setUser_id(rs.getString("user_id"));
@@ -189,13 +190,9 @@ public class CustomerDAOImpl implements CustomerDAO{
 				dto.setUser_hp(rs.getString("user_hp"));
 				dto.setUser_email(rs.getString("user_email"));
 				dto.setUser_regdate(rs.getTimestamp("user_regdate"));
-				
 			}
-			// 502. ResultSet를 읽어서 CustomerDTO에 setter로 담는다.
 			
-			if(rs.next()) {
-				
-			}
+			// 502. ResultSet를 읽어서 CustomerDTO에 setter로 담는다.
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
