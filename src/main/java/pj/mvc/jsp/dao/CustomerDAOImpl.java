@@ -82,10 +82,9 @@ public class CustomerDAOImpl implements CustomerDAO{
 		
 		try {
 			
-			String query = """
-					INSERT INTO mvc_customer_tbl(user_id, user_password, user_name, user_birthday, user_address, user_hp, user_email, user_regdate)
-					VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-					""";
+			String query = "INSERT INTO mvc_customer_tbl(user_id, user_password, user_name, " 
+					+"user_birthday, user_address, user_hp, user_email, user_regdate) "
+					+"VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			conn = dataSource.getConnection();
 			pstmt = conn.prepareStatement(query);
@@ -186,17 +185,16 @@ public class CustomerDAOImpl implements CustomerDAO{
 		try {
 			// 2. DB 연결 => 데이터베이스 커넥션 생성
 			conn = dataSource.getConnection();
-			
 			// 3. SQL 작성 => strId(sessionID)와 일치하는 데이터가 존재하는지 확인
 			String query = "SELECT * FROM mvc_customer_tbl "
 					  +"WHERE user_id = ?";
 			//4. 실행
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, strId);
-			
 			rs = pstmt.executeQuery();
 			// 5-1. ResultSet에 존재하면
 			if(rs.next()) {
+				// 502. ResultSet를 읽어서 CustomerDTO에 setter로 담는다.
 				dto.setUser_id(rs.getString("user_id"));
 				dto.setUser_password(rs.getString("user_password"));
 				dto.setUser_name(rs.getString("user_name"));
@@ -206,9 +204,6 @@ public class CustomerDAOImpl implements CustomerDAO{
 				dto.setUser_email(rs.getString("user_email"));
 				dto.setUser_regdate(rs.getTimestamp("user_regdate"));
 			}
-			
-			// 502. ResultSet를 읽어서 CustomerDTO에 setter로 담는다.
-			
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -228,21 +223,13 @@ public class CustomerDAOImpl implements CustomerDAO{
 	@Override
 	public int updateCustomer(CustomerDTO dto) {
 		int updateCnt = 0;
-		
 		try {
-					
-			String query = """
-					UPDATE mvc_customer_tbl
-					SET user_password = ?, 
-					user_name = ?, 
-					user_birthday = ?,
-					user_address = ?,
-					user_hp = ?, 
-					user_email = ?, 
-					user_regdate = ?
-					WHERE user_id = ?
-					""";
-			
+			String query = "UPDATE mvc_customer_tbl"
+					+ " SET user_password = ?,"
+					+ " user_name = ?, user_birthday = ?,"
+					+ " user_address = ?, user_hp = ?,"
+					+ " user_email = ?, user_regdate = ?"
+					+ " WHERE user_id = ?";
 			conn = dataSource.getConnection();
 			pstmt = conn.prepareStatement(query);
 			
