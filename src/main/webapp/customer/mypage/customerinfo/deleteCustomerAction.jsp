@@ -46,7 +46,7 @@
 			%>
 					<script type="text/javascript">
 					alert("회원인증 실패!!");
-					window.location="/jsp_pj_ict05/modifyDetailAction.do"
+					window.location="/jsp_pj_ict05/main.do"
 					</script>
 			<%
 				}else if(deleteCnt == 0){

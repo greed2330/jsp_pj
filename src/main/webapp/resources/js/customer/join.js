@@ -33,11 +33,11 @@ function signInCheck(){
 	
 	
 	/* 2-2. 중복확인 버튼 클릭하지 않는 경우 "중복체크 해주세요!"*/
-	if(!document.inputform.hiddenUserid.value){
-		alert("중복확인 해주세요!!");
-		document.inputform.dubChk.focus();
-		return false;
-	}
+	if (!document.inputform.hiddenUserid.value || document.inputform.hiddenUserid.value == 0) {
+			alert("중복확인 해주세요!!");
+			document.inputform.dubChk.focus();
+			return false;
+		}
 	
 	//비밀번호 불일치 => 과제
 	const userPassword = document.inputform.user_password.value;
@@ -49,6 +49,7 @@ function signInCheck(){
 		return false;
 	}
 	
+	//모든 것 체크 성공 시 true반환
 	return true;
 }
 
