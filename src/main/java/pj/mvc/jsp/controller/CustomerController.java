@@ -104,16 +104,22 @@ public class CustomerController extends HttpServlet {
 		
 		else if(url.equals("/modifyCustomer.do")) {
 			System.out.println("<<< url ==> /modifyCustomer.do >>>");
-			
+			csi = new CustomerServiceImpl();
+					
 			viewPage = "/customer/mypage/customerinfo/modifyCustomer.jsp";
 		}
 		
+		//회원정보 수정 클릭 시
+		else if(url.equals("/modifyDetailAction.do")) {
+			System.out.println("<<< url ==> /modifyDetailAction.do >>>");
+			csi.modifyCustomerAction(request, response);
+			viewPage = "/customer/mypage/customerinfo/modifyDetailAction.jsp";
+		}
+			
 		
 		//RequestDispatcher : 서블릿 또는 JSP 요청을 받은 후, 다른 컴포넌트로 요청을 위임하는 클래스이다.
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
 		dispatcher.forward(request, response);
-		
-		
 		
 	}
 }

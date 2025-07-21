@@ -115,7 +115,7 @@ public class CustomerServiceImpl implements CustomerService{
 	@Override
 	public void deleteCustomerAction(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+		System.out.println("CustomerServiceImpl - deleteCustomerAction()");
 	}
 
 	// 회원 정보 인증 처리 및 상세페이지 조회
