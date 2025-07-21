@@ -27,7 +27,8 @@ public class CustomerController extends HttpServlet {
 		action(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 	
@@ -76,8 +77,37 @@ public class CustomerController extends HttpServlet {
 		
 		//[로그인]
 		else if(url.equals("/login.do")) {
-			viewPage = "";
+			System.out.println("<<< url ==> /login.do >>>");
+			csi = new CustomerServiceImpl();
+			
+			viewPage = "/customer/login/login.jsp";
 		}
+		
+		//로그인 처리 페이지
+		else if(url.equals("/loginAction.do")) {
+			System.out.println("<<< url ==> /loginAction.do >>>");
+			
+			csi.loginAction(request, response);
+			viewPage = "/customer/login/loginAction.jsp";
+		}
+		
+		//로그아웃 처리
+		else if(url.equals("/logout.do")) {
+			System.out.println("<<< url ==> /logout.do >>>");
+			
+			request.getSession().invalidate();
+			viewPage = "/common/main.jsp";
+		}
+		
+		//[회원수정]
+		// 회원수정- 인증화면
+		
+		else if(url.equals("/modifyCustomer.do")) {
+			System.out.println("<<< url ==> /modifyCustomer.do >>>");
+			
+			viewPage = "/customer/mypage/customerinfo/modifyCustomer.jsp";
+		}
+		
 		
 		//RequestDispatcher : 서블릿 또는 JSP 요청을 받은 후, 다른 컴포넌트로 요청을 위임하는 클래스이다.
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);

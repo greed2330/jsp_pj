@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import pj.mvc.jsp.dao.CustomerDAO;
 import pj.mvc.jsp.dao.CustomerDAOImpl;
@@ -85,9 +86,31 @@ public class CustomerServiceImpl implements CustomerService{
 	@Override
 	public void loginAction(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		System.out.println("CustomerServiceImpl - loginAction()");
 		
+		
+		//3단계. 화면에서 입력받은 값을 가져온다.
+		String strId = request.getParameter("user_id");
+		String strPassword = request.getParameter("user_password");
+		
+		//4단계. 싱글톤 방식으로 DAO 객체 생성, 다형성 적용
+		CustomerDAO dao = CustomerDAOImpl.getInstance();
+		
+		//5단계 로그인 처리
+		int selectCnt = dao.idPasswordChk(strId, strPassword);
+		
+		//로그인 성공 시 세션ID를 설정(중요)
+		if(selectCnt == 1) {
+//			HttpSession session = request.getSession();
+//			session.setAttribute("sessionID", strId);
+			
+			request.getSession().setAttribute("sessionID", strId);
+			
+		}
+		
+		//6단계. jsp로 처리결과 전달
 	}
-
+	
 	// 회원 정보 인증처리 및 탈퇴처리
 	@Override
 	public void deleteCustomerAction(HttpServletRequest request, HttpServletResponse response)

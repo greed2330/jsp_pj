@@ -23,7 +23,7 @@
 		<ul class="navbar_icons">
 			<li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
 			<li><a href="#"><i class="fa-brands fa-facebook"></i></a></li>
-			<li><a href="/jsp_pj_ict/login.do">LOGIN</a></li>
+			<li><a href="/jsp_pj_ict05/login.do">LOGIN</a></li>
 			<li><a href="/jsp_pj_ict05/join.do">JOIN</a></li><!-- 서블릿 -->
 			<li><a href="#"><i class="fa-solid fa-cart-shopping"></i></a></li>
 			<li><a href="#"><i class="fa-solid fa-user"></i></a></li>
