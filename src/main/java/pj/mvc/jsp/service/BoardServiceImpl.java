@@ -1,6 +1,7 @@
 package pj.mvc.jsp.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import pj.mvc.jsp.dao.BoardDAO;
 import pj.mvc.jsp.dao.BoardDAOImpl;
+import pj.mvc.jsp.dto.BoardDTO;
+import pj.mvc.jsp.page.Paging;
 
 public class BoardServiceImpl implements BoardService{
 
@@ -23,14 +26,23 @@ public class BoardServiceImpl implements BoardService{
 		//4단계. 싱글톤 방식으로 DAO 객체 생성, 다형성 적용
 		BoardDAO dao = BoardDAOImpl.getInstance();
 		
-		//5-2단계. 전체 게시글 갯수 카운트
+		//5-1단계. 전체 게시글 갯수 카운트
+		Paging paging = new Paging(pageNum);
+		int total = dao.boardCnt();
+		System.out.println("total : "+total);
 		
+		paging.setTotalCount(total);
 		
 		//5-2단계. 게시글 목록조회
-		dao.boardList(0, 0);
+		int start = paging.getStartRow();
+		int end = paging.getEndRow();
+		
+		List<BoardDTO> list = dao.boardList(start, end);
+		System.out.println("list : "+list);
 		
 		//6단계. jsp로 처리결과 전달
-
+		request.setAttribute("list", list);
+		request.setAttribute("paging", paging);
 	}
 	
 	//[게시글 상세 처리]

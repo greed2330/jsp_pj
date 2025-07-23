@@ -51,14 +51,15 @@ public class BoardDAOImpl implements BoardDAO{
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		String sql = "SELECT "
-				+ "		FROM "
-				+ "			(SELECT A.* "
-				+ "		 	, rownum AS "
-				+ "	   		   FROM (SELECT * FROM mvc_board_tbl "
-				+ "					ORDER BY B_NUM DESC) A "
-				+ "			) "
-				+ "WHERE rn BETWEEN ? AND ?";
+		String sql =
+				"SELECT *"
+				+"FROM" 
+				+"	(SELECT A.* "
+				+"		 , rownum AS rn"
+				+"	   FROM (SELECT * FROM mvc_board_tbl"
+				+"	ORDER BY B_NUM DESC) A"
+				+"	)"
+				+"WHERE rn BETWEEN ? AND ?";
 		
 		//1. list 생성
 		List<BoardDTO> list = new ArrayList<BoardDTO>();

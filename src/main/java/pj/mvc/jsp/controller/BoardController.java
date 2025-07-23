@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import pj.mvc.jsp.service.BoardServiceImpl;
+
 /**
  * Servlet implementation class BoardController
  */
@@ -40,12 +42,14 @@ public class BoardController extends HttpServlet {
 		String contextPath = request.getContextPath();
 		String url = uri.substring(contextPath.length());
 		String viewPage="";
+		BoardServiceImpl service = new BoardServiceImpl();
 		
 		//[게시글 목록]
 		if(url.equals("/board_list.bc")||url.equals("/*.bc")) {
 			System.out.println("<<< url ==> /board_list.bc >>>");
-			
-			viewPage = "admin/csCenter/board_list.jsp";
+			service.boardListAction(request, response);
+			viewPage 
+			= "admin/csCenter/board_list.jsp";
 		}
 		
 		//[게시글 상세 화면]
