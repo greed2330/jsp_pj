@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="setting.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,7 +16,7 @@
 		</ul>
 		
 		<ul class="navbar_menu">
-			<li><a href="/jsp_pj_idt05/main.do">HOME</a></li>
+			<li><a href="${path}/main.do">HOME</a></li>
 			<li><a href="#">제품소개</a></li>
 			<li><a href="#">Q&A</a></li>
 		</ul>
@@ -23,8 +24,8 @@
 		<ul class="navbar_icons">
 			<li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
 			<li><a href="#"><i class="fa-brands fa-facebook"></i></a></li>
-			<li><a href="/jsp_pj_ict05/login.do">LOGIN</a></li>
-			<li><a href="/jsp_pj_ict05/join.do">JOIN</a></li><!-- 서블릿 -->
+			<li><a href="${path}/login.do">LOGIN</a></li>
+			<li><a href="${path}/join.do">JOIN</a></li><!-- 서블릿 -->
 			<li><a href="#"><i class="fa-solid fa-cart-shopping"></i></a></li>
 			<li><a href="#"><i class="fa-solid fa-user"></i></a></li>
 		</ul>

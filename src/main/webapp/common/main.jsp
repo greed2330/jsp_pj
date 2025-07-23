@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="setting.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,16 +10,16 @@
 <title>main</title>
 
 <!-- css -->
-<link rel="stylesheet" href="/jsp_pj_ict05/resources/css/common/header.css">
-<link rel="stylesheet" href="/jsp_pj_ict05/resources/css/common/footer.css">
-<link rel="stylesheet" href="/jsp_pj_ict05/resources/css/common/main.css">
+<link rel="stylesheet" href="${path}/resources/css/common/header.css">
+<link rel="stylesheet" href="${path}/resources/css/common/footer.css">
+<link rel="stylesheet" href="${path}/resources/css/common/main.css">
 
 <!-- js -->
 <script src="https://kit.fontawesome.com/657537baae.js" crossorigin="anonymous"></script>
 
 <!-- (3-3-2). 자바스크립트 소스 연결 -->
 <!-- defer : html을 다 읽은 후에 자바스크립트를 실행한다. 페이지가 모두 로드된 후에 실행된다. -->
-<script src="/jsp_pj_ict05/resources/js/common/main.js" defer></script>
+<script src="${path}/resources/js/common/main.js" defer></script>
 
 </head>
 <body>
@@ -30,7 +31,7 @@
 		<!-- 컨텐츠 시작 -->
 		<center>
 			<h3>main 영역</h3>
-			<img width="400px" height="300px" alt="" src="/jsp_pj_ict05/resources/images/main/cat.jpg">
+			<img width="400px" height="300px" alt="" src="${path}/resources/images/main/cat.jpg">
 		</center>
 		<!-- 컨텐츠 끝 -->
 		
