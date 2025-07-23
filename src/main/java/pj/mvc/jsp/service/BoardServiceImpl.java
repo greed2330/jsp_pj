@@ -6,14 +6,31 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import pj.mvc.jsp.dao.BoardDAO;
+import pj.mvc.jsp.dao.BoardDAOImpl;
+
 public class BoardServiceImpl implements BoardService{
 
 	//[게시글 목록]
 	@Override
 	public void boardListAction(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		System.out.println("BoardServiceImpl - boardListAction()");
 		
+		//3단계. 화면에서 입력받은 값을 가져오기.
+		String pageNum = request.getParameter("pageNum");
+		
+		//4단계. 싱글톤 방식으로 DAO 객체 생성, 다형성 적용
+		BoardDAO dao = BoardDAOImpl.getInstance();
+		
+		//5-2단계. 전체 게시글 갯수 카운트
+		
+		
+		//5-2단계. 게시글 목록조회
+		dao.boardList(0, 0);
+		
+		//6단계. jsp로 처리결과 전달
+
 	}
 	
 	//[게시글 상세 처리]
