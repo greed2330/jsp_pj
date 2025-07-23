@@ -1,0 +1,166 @@
+==============================================================
+
+[ BACKEND : 	] => Java Resources > src/main/java 하위에 작성
+
+테이블 생성 후 DTO(VO : Value Object)를 만드는걸 권장.
+
+
+1. Controller - 패키지 : pj.mvc.jsp.controller
+                       - new Servlet >  BoardController
+                       @WebServlet("*.do")  <= 진입시 .do인 요청만 받겠다는 의미, 반드시  do가 아니어도 됨.
+                       			customer : *.do   |     admin :  *.ad 
+
+2. Model(DTO + DAO)
+	DTO	 - pj.mvc.jsp.dto - BoardDTO.java
+				
+	DAO	 / DAOImpl -    패키지 : pj.mvc.jsp.dao
+						- BoardDAO.java : 인터페이스
+						- BoardDAOImpl.java : 인터페이스 구현
+
+3. Service / ServiceImpl -  패키지 : pj.mvc.jsp.service
+						- BoardService.java : 인터페이스
+						- BoardServiceImpl.java : 인터페이스 구현
+
+4. header.jsp	 => 컨트롤러에서 링크가 요청될 때 boardController.bc로 연결				
+<li><a href="/jsp_pj_ict0/join.do">JOIN</a></li>
+
+=====================================
+
+6. 계정생성(System 계정에서) 1. ~ 2.
+-- 오라클 설치(SYSTEM/ORACLE) 
+-- SYSTEM계정에서 계정 생성
+-- hr : sql developer-system_01계정에서 계정생성안해도 되고, 3.락해제 5.비밀번호변경만 한다.
+
+-- 1. 계정생성 : jsp_pj_ict05 계정생성
+-- create user <계정이름> identified by <계정암호> default tablespace users;
+create user  jsp_pj_ict05 identified by tiger default tablespace users;
+
+-- 2. 사용자 권한 부여
+-- grant [시스템 권한] to [계정];
+grant connect, resource, create view to jsp_pj_ict05;
+
+
+-- 3. 락 해제
+-- alter user <계정이름> account unlock;
+alter user jsp_pj_ict05 account unlock;
+
+-- 4. 계정 잘못만든 경우 계정, 객체 삭제하기 
+-- drop user <계정이름> cascade;
+-- drop user jsp_pj_ict05 cascade; 
+
+-- 5. 패스워드 변경
+-- alter user <계정이름> identified by <패스워드>;
+-- alter user jsp_pj_ict05 identified by tiger; 
+
+--DBeaver에서는 Oracle 하위 Schemas를 새로고침하면 자동으로 생성된 계정이 활성화 된다.
+
+//////////////////////////////////////////////////////
+
+7. 테이블 생성
+-- jsp_pj_ict05 계정에서 작업
+-- 게시판 테이블
+DROP TABLE mvc_board_tbl CASCADE CONSTRAINTS;
+CREATE TABLE mvc_board_tbl (
+	b_num	NUMBER(7) PRIMARY KEY,	--글번호
+	b_title VARCHAR2(50) NOT NULL,	--글제목
+	b_content	CLOB NOT NULL,		--글내용
+	b_writer	VARCHAR2(30) NOT NULL, --작성자
+	b_password	VARCHAR2(30) NOT NULL,--수정, 삭제용 비밀번호
+	b_readcnt	NUMBER(6)	DEFAULT 0,	--조회수
+	b_regdate	DATE	DEFAULT SYSDATE, --작성일
+	b_comment_count	NUMBER(6) DEFAULT 0	--댓글개수
+);
+
+SELECT * FROM mvc_board_tbl
+ORDER BY b_num;
+
+-- 게시글 입력(다건)
+DECLARE	--선언문
+	i	NUMBER := 1;	--변수 i에 1을 대입
+BEGIN
+	WHILE i<=991 LOOP
+		INSERT INTO mvc_board_tbl(b_num, b_title, b_content, b_writer, b_password, b_readcnt, b_regdate, b_comment_count)
+		VALUES(i, '글제목'||i, '글내용'||i, '작성자'||i, 1234, 0, sysdate, 0);
+		i := i+1;
+	END LOOP;
+END;
+
+COMMIT;
+
+8. Servers > context.xml
+ 	<!-- 커넥션풀(DBCP: DataBase Connection Pool 방식) => Servers > Tomcat > context.xml
+    	=> 톰캣 재설치시 추가해야 하며, 안하면 DB연결이 안된다.
+     -->
+      <Resource
+    	author="Container"
+    	name="jdbc/jsp_pj_ict05"
+    	type="javax.sql.DataSource"
+    	driverClassName="oracle.jdbc.driver.OracleDriver"
+    	url = "jdbc:oracle:thin:@localhost:1521:xe"
+		username = "jsp_pj_ict05"
+		password = "tiger"
+		maxActive="7"
+		maxWait="1000"
+   />                                    
+                                        
+                                        
+/////   [ jstl 반영 ] /////////////////////////////////////////////////
+
+기존소스 => old 폴더를 만들고, common, customer, resources, admin 폴더를 붙여넣는다.
+
+
+common 폴더에 setting.jsp 만들고 작성
+ /common/header.jsp
+ /common/footer.jsp
+ 
+- WEB-INF/lib 폴더에 standard.jar  jstl.jar 추가하지 않으면 setting.jsp 오류
+--------------------------------------------------------------------------
+ 
+- main.jsp ->  <%@ include file="setting.jsp" %> 후 ${path} 지정
+- header.jsp ->  <%@ include file="setting.jsp" %> 후 ${path} 지정
+- join.jsp ->  <%@ include file="/common/setting.jsp" %> 후 ${path} 지정
+- joinAction.jsp ->  <%@ include file="/common/setting.jsp" %> 후 ${path} 지정
+   <c:if test="${insertCnt == 0}">  </c:if>
+
+- idConfirmAction.jsp ->  <%@ include file="/common/setting.jsp" %> 후 ${path} 지정
+
+   
+- login.jsp ->  <%@ include file="/common/setting.jsp" %> 후 ${path} 지정
+- loginAction.jsp ->  <%@ include file="/common/setting.jsp" %> 후 ${path} 지정
+ 					<c:if test="${sessionScope.sessionID == null}">  </c:if>
+ 					<c:if test="${sessionScope.sessionID != null}">  </c:if>
+ 					${sessionScope.sessionID}
+
+- deleteBoard.jsp
+   <%@ include file="/common/setting.jsp" %> 후 ${path} 지정
+   ${sessionScope.sessionID}
+   
+- deleteBoardAction.jsp
+    <%@ include file="/common/setting.jsp" %> 후 ${path} 지정
+	<c:if test="${deleteCnt == 1}">  </c:if>
+
+- modifyBoard.jsp
+   <%@ include file="/common/setting.jsp" %> 후 ${path} 지정
+   ${sessionScope.sessionID}
+   
+- modifyDetailAction.jsp
+   <%@ include file="/common/setting.jsp" %> 후 ${path} 지정
+	${dto.getId()}....
+	
+	<c:if test="${dto.getHp() != null}">	
+		<c:set var="hpArr"   value="${fn:split(dto.getHp(), '-')}"  />
+	</c:if>
+	
+	<c:set var="emailArr"  value="${fn:split(dto.getEmail(), '@')}"  />
+
+- modifyBoardAction.jsp
+ 	<%@ include file="/common/setting.jsp" %> 후 ${path} 지정
+	<c:if test="${updateCnt == 1}">  </c:if>
+
+
+
+
+
+
+
+ 

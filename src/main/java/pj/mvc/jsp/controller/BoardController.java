@@ -1,6 +1,8 @@
 package pj.mvc.jsp.controller;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -39,9 +41,14 @@ public class BoardController extends HttpServlet {
 		String url = uri.substring(contextPath.length());
 		String viewPage="";
 		
-		//게시글 목록
+		//[게시글 목록]
+		if(url.equals("/board_list.bc")||url.equals("/*.bc")) {
+			System.out.println("<<< url ==> /board_list.bc >>>");
+			
+			viewPage = "admin/csCenter/board_list.jsp";
+		}
 		
-		//게시글 상세페이지
+		//[게시글 상세 화면]
 		
 		//[게시글 수정삭제 버튼] 클릭 시 - 비밀번호 인증처리
 		
@@ -52,6 +59,13 @@ public class BoardController extends HttpServlet {
 		//[게시글 작성 화면]
 		
 		//[게시글 작성 처리]
+		
+		//[댓글 작성 처리]
+		
+		//[댓글 목록]
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
+		dispatcher.forward(request, response);
 	}
 
 }
