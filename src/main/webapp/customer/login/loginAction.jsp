@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="/common/setting.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,16 +10,16 @@
 <title>main</title>
 
 <!-- css -->
-<link rel="stylesheet" href="/jsp_pj_ict05/resources/css/common/header.css">
-<link rel="stylesheet" href="/jsp_pj_ict05/resources/css/common/footer.css">
-<link rel="stylesheet" href="/jsp_pj_ict05/resources/css/customer/login.css">
+<link rel="stylesheet" href="${path}/resources/css/common/header.css">
+<link rel="stylesheet" href="${path}/resources/css/common/footer.css">
+<link rel="stylesheet" href="${path}/resources/css/customer/login.css">
 
 <!-- js -->
 <script src="https://kit.fontawesome.com/657537baae.js" crossorigin="anonymous"></script>
 
 <!-- (3-3-2). 자바스크립트 소스 연결 -->
 <!-- defer : html을 다 읽은 후에 자바스크립트를 실행한다. 페이지가 모두 로드된 후에 실행된다. -->
-<script src="/jsp_pj_ict05/resources/js/common/main.js" defer></script>
+<script src="${path}/resources/js/common/main.js" defer></script>
 
 </head>
 <body>
@@ -43,12 +44,8 @@
 							onsubmit="return loginCheck()">
 							
 								<!-- 2-1. 중복체크 안했을 시 value = 0 체크하면 value =1 -->
-								<%
-									String sessionID = (String)request.getSession().getAttribute("sessionID");
-								
-									//세션이 없는 경우 : 로그인 실패
-									if(sessionID == null){
-								%>
+								<!-- 세션이 없는 경우 : 로그인 실패 -->
+								<c:if test="${sessionScope.sessionID == null}">
 										<script type="text/javascript">
 											alert("아이디와 비밀번호가 일치하지 않습니다.");
 										</script>
@@ -80,10 +77,8 @@
 												</td>
 											</tr>
 										</table>
-								<%	
-									}
-									else{
-								%>
+									</c:if>
+								<c:if test="${sessionScope.sessionID != null}">
 										<script type="text/javascript">
 											alert("로그인 성공");
 										</script>
@@ -92,7 +87,7 @@
 											
 											<tr>
 												<th colspan="2">
-												<span style=""><b><%= sessionID %>님 반갑습니다.</b></span>
+												<span style=""><b>${sessionScope.sessionID}님 반갑습니다.</b></span>
 												 </th>
 											</tr>
 											
@@ -100,17 +95,14 @@
 												<td colspan="2" style="border-bottom: none">
 													<br> 
 													<div align="right">
-														<input class="inputButton" type="button" value="회원수정" onclick="window.location='/jsp_pj_ict05/modifyCustomer.do'">
-														<input class="inputButton" type="button" value="회원탈퇴" onclick="window.location='/jsp_pj_ict05/deleteCustomer.do'">
-														<input class="inputButton" type="button" value="로그아웃" onclick="window.location='/jsp_pj_ict05/logout.do'"><!-- controller의 .do로 감. -->
+														<input class="inputButton" type="button" value="회원수정" onclick="window.location='${path}/modifyCustomer.do'">
+														<input class="inputButton" type="button" value="회원탈퇴" onclick="window.location='${path}/deleteCustomer.do'">
+														<input class="inputButton" type="button" value="로그아웃" onclick="window.location='${path}/logout.do'"><!-- controller의 .do로 감. -->
 													</div>
 												</td>
 											</tr>
 										</table>
-								<%
-									}
-								%>
-								
+									</c:if>
 								
 							</form>
 						</div>	<!-- join -->

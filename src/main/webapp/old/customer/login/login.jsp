@@ -66,7 +66,7 @@
 											<div align="right">
 												<input class="inputButton" type="submit" value="로그인">
 												<input class="inputButton" type="reset" value="취소">
-												<input class="inputButton" type="button" value="가입취소" onclick="window.location='main.do'"><!-- controller의 .do로 감. -->
+												<input class="inputButton" type="button" value="가입취소" onclick="window.location='/jsp_pj_ict05/main.do'"><!-- controller의 .do로 감. -->
 											</div>
 										</td>
 									</tr>
