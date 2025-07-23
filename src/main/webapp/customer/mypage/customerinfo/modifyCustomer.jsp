@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="/common/setting.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,16 +10,16 @@
 <title>main</title>
 
 <!-- css -->
-<link rel="stylesheet" href="/jsp_pj_ict05/resources/css/common/header.css">
-<link rel="stylesheet" href="/jsp_pj_ict05/resources/css/common/footer.css">
-<link rel="stylesheet" href="/jsp_pj_ict05/resources/css/customer/login.css">
+<link rel="stylesheet" href="${path}/resources/css/common/header.css">
+<link rel="stylesheet" href="${path}/resources/css/common/footer.css">
+<link rel="stylesheet" href="${path}/resources/css/customer/login.css">
 
 <!-- js -->
 <script src="https://kit.fontawesome.com/657537baae.js" crossorigin="anonymous"></script>
 
 <!-- (3-3-2). 자바스크립트 소스 연결 -->
 <!-- defer : html을 다 읽은 후에 자바스크립트를 실행한다. 페이지가 모두 로드된 후에 실행된다. -->
-<script src="/jsp_pj_ict05/resources/js/common/main.js" defer></script>
+<script src="${path}/resources/js/common/main.js" defer></script>
 
 </head>
 <body>
@@ -41,14 +42,11 @@
 						<div class="join">
 							<form name="passwordform" action="modifyDetailAction.do" method="post"><!-- 상세페이지 요청 -->
 							
-								<%
-									String sessionID = (String)request.getSession().getAttribute("sessionID");
-								%>
 								<input type="hidden" name="hiddenUserid" value="0">
 								<table>
 									<tr>
 										<th colspan="2" align="center"> 
-											<span style="color: #FF82AA"><b><%= sessionID %></span>님 비밀번호를 입력하세요!!
+											<span style="color: #FF82AA"><b>${sessionScope.sessionID}</span>님 비밀번호를 입력하세요!!
 										</th>
 									</tr>
 									
@@ -65,7 +63,7 @@
 											<br> 
 											<div align="right">
 												<input class="inputButton" type="submit" value="회원정보">
-												<input class="inputButton" type="button" value="취소" onclick="window.location='main.do'">
+												<input class="inputButton" type="button" value="취소" onclick="window.location='${path}main.do'">
 											</div>
 										</td>
 									</tr>
