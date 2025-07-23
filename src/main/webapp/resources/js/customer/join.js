@@ -40,13 +40,16 @@ function signInCheck(){
 		}
 	
 	//비밀번호 불일치 => 과제
-	const userPassword = document.inputform.user_password.value;
-	const rePassword = document.inputform.re_password.value;
-	
-	if(userPassowrd != rePassword){
-		alert("비밀번호가 일치하지 않습니다.");
-		document.inputform.user_password.focus();
-		return false;
+	//password에 값이 들어있다면
+	if(userPassowrd != null){
+		const userPassword = document.inputform.user_password.value;
+		const rePassword = document.inputform.re_password.value;
+		
+		if(userPassowrd != rePassword){
+			alert("비밀번호가 일치하지 않습니다.");
+			document.inputform.user_password.focus();
+			return false;
+		}
 	}
 	
 	//모든 것 체크 성공 시 true반환

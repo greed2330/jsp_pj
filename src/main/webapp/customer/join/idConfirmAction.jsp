@@ -39,7 +39,7 @@
 				<div id="section2">
 					<div id="s2_inner">
 						<div class="join">
-							<form name="loginform" action="loginAction.do" method="post"
+							<form name="idConfirmform" action="idConfirmAction.do" method="post"
 							onsubmit="return signInCheck()">
 								<!-- id 중복일 때, id를 입력받아 다시 중복체크 -->
 								<c:if test="${selectCnt == 1}">
