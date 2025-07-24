@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/common/setting.jsp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -78,32 +79,37 @@
 											</tr>
 										</table>
 									</c:if>
+									<!-- 세션이 있는 경우 : 로그인 성공 -->
 								<c:if test="${sessionScope.sessionID != null}">
-										<script type="text/javascript">
-											alert("로그인 성공");
-										</script>
-								
-										<table>
-											
-											<tr>
-												<th colspan="2">
-												<span style=""><b>${sessionScope.sessionID}님 반갑습니다.</b></span>
-												 </th>
-											</tr>
-											
-											<tr>
-												<td colspan="2" style="border-bottom: none">
-													<br> 
-													<div align="right">
-														<input class="inputButton" type="button" value="회원수정" onclick="window.location='${path}/modifyCustomer.do'">
-														<input class="inputButton" type="button" value="회원탈퇴" onclick="window.location='${path}/deleteCustomer.do'">
-														<input class="inputButton" type="button" value="로그아웃" onclick="window.location='${path}/logout.do'"><!-- controller의 .do로 감. -->
-													</div>
-												</td>
-											</tr>
-										</table>
-									</c:if>
-								
+									<script type="text/javascript">
+										alert("로그인 성공");
+									</script>
+							
+									<table>
+										
+										<tr>
+											<th colspan="2">
+											<span style=""><b>${sessionScope.sessionID}님 반갑습니다.</b></span>
+											 </th>
+										</tr>
+										
+										<tr>
+											<td colspan="2" style="border-bottom: none">
+												<br> 
+												<div align="right">
+													<input class="inputButton" type="button" value="회원수정" onclick="window.location='${path}/modifyCustomer.do'">
+													<input class="inputButton" type="button" value="회원탈퇴" onclick="window.location='${path}/deleteCustomer.do'">
+													<input class="inputButton" type="button" value="로그아웃" onclick="window.location='${path}/logout.do'"><!-- controller의 .do로 감. -->
+													
+													<!-- admin/1234로 가입 후 admin으로 로그인 할 때만 관리자 링크 보이게 하기 -->
+													<c:if test="${sessionScope.sessionID == 'admin'}">
+														<a href="${path}/board_list.bc" style="color:f0f;">${sessionScope.sessionID}</a>
+													</c:if>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</c:if>
 							</form>
 						</div>	<!-- join -->
 					</div>

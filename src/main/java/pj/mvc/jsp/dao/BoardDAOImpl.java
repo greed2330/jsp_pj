@@ -104,7 +104,37 @@ public class BoardDAOImpl implements BoardDAO{
 	//게시글 갯수 구하기
 	@Override
 	public int boardCnt() {
-		return 0;
+		System.out.println("BoardDAOImpl - boardCnt()");
+		String sql = "SELECT COUNT(*) AS cnt FROM MVC_BOARD_TBL";
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		int total = 0;
+		
+		
+		try {
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				total = rs.getInt("cnt");
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(conn != null)conn.close();
+				if(pstmt != null)pstmt.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return total;
 	}
 
 	//조회수 증가
