@@ -54,7 +54,7 @@ public class BoardController extends HttpServlet {
 		//[게시글 상세 화면]
 		if(url.equals("/board_detailAction.bc")) {
 			System.out.println("<<<url ==> /board_detailAction.bc>>>");
-			
+			service.boardDetailAction(request, response);
 			viewPage = "admin/csCenter/board_detailAction.jsp";
 		}
 		

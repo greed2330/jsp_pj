@@ -79,6 +79,7 @@ public class BoardDAOImpl implements BoardDAO{
 				dto.setB_num(rs.getInt("b_num"));
 				dto.setB_title(rs.getString("b_title"));
 				dto.setB_content(rs.getString("b_content"));
+				dto.setB_readcnt(rs.getInt("b_readcnt"));
 				dto.setB_writer(rs.getString("b_writer"));
 				dto.setB_password(rs.getString("b_password"));
 				dto.setB_regdate(rs.getDate("b_regdate"));
@@ -140,13 +141,66 @@ public class BoardDAOImpl implements BoardDAO{
 	//조회수 증가
 	@Override
 	public void plusReadCnt(int board_num) {
+		System.out.println("BoardDAOImpl - plusReadCnt()"); 
+		Connection conn = null;
+		PreparedStatement pstmt = null;
 		
+		String sql = "UPDATE mvc_board_tbl "
+				+ "SET b_readcnt = b_readcnt + 1 "
+				+ "WHERE b_num = ?";
+		try {
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board_num);
+			pstmt.executeUpdate();
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(conn != null)conn.close();
+				if(pstmt != null)pstmt.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	//게시글 상세 처리
 	@Override
 	public BoardDTO getBoardDetail(int board_num) {
-		return null;
+		BoardDTO dto = new BoardDTO();
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT * FROM MVC_BOARD_TBL "
+				+ "WHERE b_num = ?";
+		try {
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board_num);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				dto.setB_num(rs.getInt("b_num"));
+				dto.setB_title(rs.getString("b_title"));
+				dto.setB_content(rs.getString("b_content"));
+				dto.setB_writer(rs.getString("b_writer"));
+				dto.setB_readcnt(rs.getInt("b_readcnt"));
+				dto.setB_password(rs.getString("b_password"));
+				dto.setB_regdate(rs.getDate("b_regdate"));
+				dto.setB_comment_count(rs.getInt("b_comment_count"));
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(conn != null)conn.close();
+				if(pstmt != null)pstmt.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return dto;
 	}
 
 	//게시글 수정삭제 버튼 클릭 시 - 비밀번호 인증처리

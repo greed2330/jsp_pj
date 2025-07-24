@@ -3,6 +3,7 @@ package pj.mvc.jsp.service;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +38,7 @@ public class BoardServiceImpl implements BoardService{
 		int start = paging.getStartRow();
 		int end = paging.getEndRow();
 		
+		
 		List<BoardDTO> list = dao.boardList(start, end);
 		System.out.println("list : "+list);
 		
@@ -49,7 +51,23 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public void boardDetailAction(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		System.out.println("BoardServiceImpl - boardDetailAction()");
+		
+		//3단계. get 방식으로 넘긴 값을 가져온다.(hidden)
+		int b_num = Integer.parseInt(request.getParameter("b_num"));
+		
+		//4단계. 싱글톤 방식으로 DAO 객체 생성, 다형성 적용
+		BoardDAO dao = BoardDAOImpl.getInstance();
+		
+		//5-1단계. 조회수 증가
+		dao.plusReadCnt(b_num);
+		BoardDTO dto = dao.getBoardDetail(b_num);
+		
+		//5-2단계. 게시글 상세페이지
+		
+		//6단계. jsp로 처리결과 전달
+		request.setAttribute("dao", dao);
+		request.setAttribute("dto", dto);
 		
 	}
 
