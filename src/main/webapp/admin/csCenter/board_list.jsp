@@ -61,7 +61,7 @@
 									<tr>
 										<td>${dto.b_num}</td>
 										<td>${dto.b_writer}</td>
-										<td>${dto.b_title}</td>
+										<td><a href="${path}/board_detailAction.bc?b_num=${dto.b_num}">${dto.b_title}</a></td>
 										<td>${dto.b_regdate}</td>
 										<td>${dto.b_readcnt}</td>
 									</tr>

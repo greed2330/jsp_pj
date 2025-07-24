@@ -48,11 +48,16 @@ public class BoardController extends HttpServlet {
 		if(url.equals("/board_list.bc")||url.equals("/*.bc")) {
 			System.out.println("<<< url ==> /board_list.bc >>>");
 			service.boardListAction(request, response);
-			viewPage 
-			= "admin/csCenter/board_list.jsp";
+			viewPage = "admin/csCenter/board_list.jsp";
 		}
 		
 		//[게시글 상세 화면]
+		if(url.equals("/board_detailAction.bc")) {
+			System.out.println("<<<url ==> /board_detailAction.bc>>>");
+			
+			viewPage = "admin/csCenter/board_detailAction.jsp";
+		}
+		
 		
 		//[게시글 수정삭제 버튼] 클릭 시 - 비밀번호 인증처리
 		
