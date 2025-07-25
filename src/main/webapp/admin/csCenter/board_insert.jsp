@@ -24,23 +24,31 @@
 <script>
 	
 	$(function(){	//상세 페이지가 로딩되면
-		//목록 버튼을 눌렀을 때, 목록으로 넘어가기
-		$('#btnList').click(function(){
-			location.href="${path}/board_list.bc";
+		//btnSave 버튼을 눌렀을 때, 비밀번호, 글제목, 글내용 체크 -> board_insertAction.bc, submit
+		$('#btnSave').click(function(){
+			//비밀번호 입력 확인
+			if(!$("#b_password").val()){
+				alert("비밀번호 미기입!!");
+				$("#b_password").focus();
+				return false;
+			}
+			
+			if(!$("#b_title").val()){
+				alert("글 제목을 입력하세요!!");
+				$("#b_title").focus();
+				return false;
+			}
+			
+			if(!$("#b_content").val()){
+				alert("내용을 입력하세요!!");
+				$("#b_content").focus();
+				return false;
+			}
+			
+			document.insertForm.action="${path}/board_insertAction.bc";
+			document.insertForm.submit();
 		});
-		
 		// [게시글 수정 버튼] 클릭 시 [게시글 수정 처리]로 이동
-		$('#btnEdit').click(function(){
-			document.editForm.action="${path}/board_updateAction.bc";
-			document.editForm.submit();
-		});
-		
-		// [게시글 삭제 버튼] 클릭 시 [게시글 삭제 처리]로 이동
-		$('#btnDelete').click(function(){
-			document.editForm.action="${path}/board_deleteAction.bc";
-			document.editForm.submit();
-		});
-		
 	});
 </script>
 
@@ -56,7 +64,7 @@
 			<div id="contents">
 				<!-- 상단 중앙1 시작 -->
 				<div id="section1">
-					<h1 align="center">게시판 수정 삭제 페이지</h1>
+					<h1 align="center">게시판 작성 페이지</h1>
 				</div>
 				<!-- 상단 중앙1 종료 -->
 				
@@ -69,58 +77,39 @@
 					<!-- 우측화면 시작 -->
 					<div id="right">
 						<div class="table_div">
-							<form name="editForm" method="post">
+							<form name="insertForm" method="post">
 								<table>
 									<tr>
-										<th style="width: 200px">글번호</th>
-										<td style="width: 200px; text-align:center">${dto.b_num}</td>
-										
-										<th style="width: 200px">조회수</th>
-										<td style="width: 200px; text-align:center">${dto.b_readcnt}</td>
-									</tr>
-									
-									<tr>
 										<th style="width: 200px">작성자</th>
-										<td style="width: 200px; text-align:center">${dto.b_writer}</td>
+										<td style="width: 200px; text-align:center">${sessionScope.sessionID}</td>
 										
 										<th style="width: 200px">비밀번호</th>
 										<td style="width: 200px; text-align:center">
 											<input style="width: 200px" type="password" class="input" name="b_password" id="b_password" 
-											size="30" placeholder="비밀번호 입력" autofocus required>
-											
-											<c:if test="${param.message == 'error'}">
-												<br><span style="color:red">비밀번호 불일치!!!</span>
-											</c:if>
+											size="30" placeholder="비밀번호 입력" autofocus>
 										</td>
 									</tr>
 									
+									
 									<tr>
-										<th style="width: 200px">글제목</th>
+										<th style="width: 100%">글제목</th>
 										<td colspan="3" style="text-align:center">
 										<input style="width: 200px" type="text" class="input" name="b_title" id="b_title" 
-											size="50" placeholder="글제목 입력" value="${dto.b_title}" autofocus required>
+											size="100px" placeholder="글제목 입력">
 										</td>
 									</tr>
 									<tr>
 										<th style="width: 200px">글내용</th>
 										<td colspan="3" style="width: 200px; text-align:center">
-										<textarea rows="5" cols="93" name="b_content" id="b_content">${dto.b_content}</textarea>
+										<textarea rows="5" cols="93" name="b_content" id="b_content"></textarea>
 										</td>
 									</tr>
-									
-									<tr>
-										<th style="width: 200px">작성일</th>
-										<td colspan="3" style="text-align:center">${dto.b_regdate}</td>
-									</tr>
-									
 									<tr>
 										<td colspan="4" style="text-align:center">
 											<br>
 											<!-- 게시글번호 hidden 추가 : input이 없으므로(게시글 번호는 입력받지 않으므로 input이 없음) -->
-											<input type="hidden" value="${dto.b_num}" name="hidden_b_num">
-											<input type="button" class="inputButton" value="수정" id="btnEdit">
-											<input type="button" class="inputButton" value="삭제" id="btnDelete">
-											<input type="button" class="inputButton" value="목록" id="btnList">
+											<input type="button" class="inputButton" value="작성" id="btnSave">
+											<input type="button" class="inputButton" value="초기화" id="btnDelete">
 										</td>
 									</tr>
 								</table>

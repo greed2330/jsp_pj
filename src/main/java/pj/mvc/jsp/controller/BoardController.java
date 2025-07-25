@@ -106,8 +106,14 @@ public class BoardController extends HttpServlet {
 			viewPage = "admin/csCenter/board_insert.jsp";
 		}
 		//[게시글 작성 처리]
-		
-		
+		if(url.equals("/board_insertAction.bc")) {
+			System.out.println("<<< url ==> /board_insertAction.bc >>>");
+			service.boardInsertAction(request, response);
+			
+			viewPage = request.getContextPath() + "/board_list.bc";
+			response.sendRedirect(viewPage);
+			return;
+		}
 		//[댓글 작성 처리]
 		
 		//[댓글 목록]

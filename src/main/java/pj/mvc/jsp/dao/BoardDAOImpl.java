@@ -256,6 +256,7 @@ public class BoardDAOImpl implements BoardDAO{
 	//게시글 삭제 처리
 	@Override
 	public void deleteBoard(int board_num) {
+		System.out.println("BoardDAOImpl - deleteBoard()");
 		int deleteCnt = 0;
 		String sql = "DELETE FROM MVC_BOARD_TBL "
 				+ "WHERE b_num = ?";		
@@ -280,8 +281,28 @@ public class BoardDAOImpl implements BoardDAO{
 
 	//게시글 작성 처리
 	@Override
-	public int insertBoard(BoardDTO dto) {
-		return 0;
+	public void insertBoard(BoardDTO dto) {
+		System.out.println("BoardDAOImpl - insertBoard()");
+		String sql = "INSERT INTO mvc_board_tbl(b_num, b_title, b_content, b_writer, b_password, b_regdate, b_comment_count) "
+				+"VALUES((SELECT NVL(MAX(b_num)+1, 1) FROM MVC_BOARD_TBL), ?, ?, ?, ?, sysdate, 0)";
+		try {
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getB_title());
+			pstmt.setString(2, dto.getB_content());
+			pstmt.setString(3, dto.getB_writer());
+			pstmt.setString(4, dto.getB_password());
+			pstmt.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(conn != null)conn.close();
+				if(pstmt != null)pstmt.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	//댓글 작성 처리

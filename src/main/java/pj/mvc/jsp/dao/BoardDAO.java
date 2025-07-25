@@ -28,7 +28,7 @@ public interface BoardDAO {
 	public void deleteBoard(int board_num);
 	
 	//게시글 작성 처리
-	public int insertBoard(BoardDTO dto);
+	public void insertBoard(BoardDTO dto);
 	
 	//댓글 작성 처리
 	public int insertComment(BoardCommentDTO dto);

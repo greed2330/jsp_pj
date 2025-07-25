@@ -23,6 +23,7 @@
 <script src="${path}/resources/js/common/main.js" defer></script>
 
 <script>
+	//글쓰기 버튼을 눌렀을 때
 	$(function(){
 		$('#btnInsert').click(function(){
 			location.href="${path}/board_insert.bc";
@@ -102,7 +103,7 @@
 									</tr>
 									
 									<tr>
-										<td colspan="5" align="right">
+										<td colspan="5">
 											<div align="right">
 											<input type="button" class="inputButton" value="글쓰기" id="btnInsert">
 											</div>

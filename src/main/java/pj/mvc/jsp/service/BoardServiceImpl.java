@@ -138,15 +138,21 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public void boardInsertAction(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+		System.out.println("BoardServiceImpl - boardInsertAction()");
+		BoardDAO dao = BoardDAOImpl.getInstance();
+		BoardDTO dto = new BoardDTO();
+		dto.setB_writer((String)request.getSession().getAttribute("sessionID"));
+		dto.setB_password(request.getParameter("b_password"));
+		dto.setB_content(request.getParameter("b_content"));
+		dto.setB_title(request.getParameter("b_title"));
+		dao.insertBoard(dto);
 	}
 
 	//[댓글 작성 처리]
 	@Override
 	public void commentAddaction(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
+				
 	}
 
 	//[댓글 목록]
