@@ -22,10 +22,10 @@ public interface BoardDAO {
 	public int password_chk(int board_num, String password);
 	
 	//게시글 수정 처리
-	public int updateBoard(BoardDTO dto);
+	public void updateBoard(BoardDTO dto);
 	
 	//게시글 삭제 처리
-	public int deleteBoard(int board_num);
+	public void deleteBoard(int board_num);
 	
 	//게시글 작성 처리
 	public int insertBoard(BoardDTO dto);

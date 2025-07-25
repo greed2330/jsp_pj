@@ -75,31 +75,69 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public int password_chkAction(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		return 0;
+		System.out.println("BoardServiceImpl - password_chkAction()");
+		//3단계. get 방식으로 넘긴 값을 가져온다.(hidden)
+		int num = Integer.parseInt(request.getParameter("hidden_b_num")); 
+		String password = request.getParameter("b_password");
+		
+		//4단계. 싱글톤 방식으로 DAO 객체 생성, 다형성 적용
+		BoardDAO dao = BoardDAOImpl.getInstance();
+		
+		//5-1단계. 게시글 수정 삭제 시 비밀번호 인증
+		int result = dao.password_chk(num, password);
+		//5-2단계. 게시글 상세 페이지 => 수정하기 위해 수정상세페이지에 뿌릴 값 받아오기
+		BoardDTO dto = null;
+		if(result != 0) {
+			dto = dao.getBoardDetail(num);
+		}
+		
+		//6단계. jsp로 처리결과 전달
+		request.setAttribute("dto", dto);
+		
+		System.out.println(result);
+		return result;
 	}
 
 	//[게시글 수정 처리]
 	@Override
 	public void boardUpdateAction(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		System.out.println("BoardServiceImpl - boardUpdateAction()");
+		//3단계. 화면에서 입력된 값을 가져온다.(hidden 포함)을 가져와서 DTO에 담기
+		BoardDTO dto = new BoardDTO();
+		dto.setB_num(Integer.parseInt(request.getParameter("hidden_b_num")));
+		dto.setB_password(request.getParameter("b_password"));
+		dto.setB_title(request.getParameter("b_title"));
+		dto.setB_content(request.getParameter("b_content"));
 		
+		//4단계. 싱글톤 방식으로 DAO 객체 생성, 다형성 적용
+		BoardDAO dao = BoardDAOImpl.getInstance();
+		dao.updateBoard(dto);
+		
+		//5단계. 게시글 수정처리 후 컨트롤러에서 board_list로 이동
+		
+		//6단계. jsp로 처리결과 전달
 	}
 	
 	//[게시글 삭제 처리]
 	@Override
 	public void boardDeleteAction(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		System.out.println("BoardServiceImpl - boardDeleteAction()");
+		//3단계. get 방식으로 넘긴 값을 가져온다.(hidden)
 		
+		
+		//4단계. 싱글톤 방식으로 DAO 객체 생성, 다형성 적용
+		BoardDAO dao = BoardDAOImpl.getInstance();
+		dao.deleteBoard(Integer.parseInt(request.getParameter("hidden_b_num")));
+		
+		//5단계. 게시글 수정처리 후 컨트롤러에서 board_list로 이동
 	}
 
 	//[게시글 작성 처리]
 	@Override
 	public void boardInsertAction(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		
 	}
 

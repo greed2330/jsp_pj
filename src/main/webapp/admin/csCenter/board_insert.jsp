@@ -23,17 +23,24 @@
 <script src="${path}/resources/js/common/main.js" defer></script>
 <script>
 	
-	$(function(){
+	$(function(){	//상세 페이지가 로딩되면
 		//목록 버튼을 눌렀을 때, 목록으로 넘어가기
 		$('#btnList').click(function(){
 			location.href="${path}/board_list.bc";
 		});
 		
-		// [게시글 수정삭제 버튼] 클릭 시 
+		// [게시글 수정 버튼] 클릭 시 [게시글 수정 처리]로 이동
 		$('#btnEdit').click(function(){
-			document.detailForm.action="${path}/password_chkAction.bc";
-			document.detailForm.submit();
+			document.editForm.action="${path}/board_updateAction.bc";
+			document.editForm.submit();
 		});
+		
+		// [게시글 삭제 버튼] 클릭 시 [게시글 삭제 처리]로 이동
+		$('#btnDelete').click(function(){
+			document.editForm.action="${path}/board_deleteAction.bc";
+			document.editForm.submit();
+		});
+		
 	});
 </script>
 
@@ -49,7 +56,7 @@
 			<div id="contents">
 				<!-- 상단 중앙1 시작 -->
 				<div id="section1">
-					<h1 align="center">상세 페이지</h1>
+					<h1 align="center">게시판 수정 삭제 페이지</h1>
 				</div>
 				<!-- 상단 중앙1 종료 -->
 				
@@ -62,7 +69,7 @@
 					<!-- 우측화면 시작 -->
 					<div id="right">
 						<div class="table_div">
-							<form name="detailForm" method="post">
+							<form name="editForm" method="post">
 								<table>
 									<tr>
 										<th style="width: 200px">글번호</th>
@@ -82,23 +89,23 @@
 											size="30" placeholder="비밀번호 입력" autofocus required>
 											
 											<c:if test="${param.message == 'error'}">
-												<br>
-												<span style="color:red">
-													<script>
-														alert("비밀번호 불일치!!");
-													</script>
-													</span>
+												<br><span style="color:red">비밀번호 불일치!!!</span>
 											</c:if>
 										</td>
 									</tr>
 									
 									<tr>
 										<th style="width: 200px">글제목</th>
-										<td colspan="3" style="text-align:center">${dto.b_title}</td>
+										<td colspan="3" style="text-align:center">
+										<input style="width: 200px" type="text" class="input" name="b_title" id="b_title" 
+											size="50" placeholder="글제목 입력" value="${dto.b_title}" autofocus required>
+										</td>
 									</tr>
 									<tr>
 										<th style="width: 200px">글내용</th>
-										<td colspan="3" style="width: 200px; text-align:center">${dto.b_content}</td>
+										<td colspan="3" style="width: 200px; text-align:center">
+										<textarea rows="5" cols="93" name="b_content" id="b_content">${dto.b_content}</textarea>
+										</td>
 									</tr>
 									
 									<tr>
@@ -111,7 +118,8 @@
 											<br>
 											<!-- 게시글번호 hidden 추가 : input이 없으므로(게시글 번호는 입력받지 않으므로 input이 없음) -->
 											<input type="hidden" value="${dto.b_num}" name="hidden_b_num">
-											<input type="button" class="inputButton" value="수정/삭제" id="btnEdit">
+											<input type="button" class="inputButton" value="수정" id="btnEdit">
+											<input type="button" class="inputButton" value="삭제" id="btnDelete">
 											<input type="button" class="inputButton" value="목록" id="btnList">
 										</td>
 									</tr>

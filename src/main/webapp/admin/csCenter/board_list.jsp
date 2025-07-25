@@ -22,6 +22,13 @@
 <!-- defer : html을 다 읽은 후에 자바스크립트를 실행한다. 페이지가 모두 로드된 후에 실행된다. -->
 <script src="${path}/resources/js/common/main.js" defer></script>
 
+<script>
+	$(function(){
+		$('#btnInsert').click(function(){
+			location.href="${path}/board_insert.bc";
+		});
+	});
+</script>
 </head>
 <body>
 	<div class="wrap">
@@ -91,6 +98,14 @@
 													</li>
 												</c:if>
 											</ul>
+										</td>
+									</tr>
+									
+									<tr>
+										<td colspan="5" align="right">
+											<div align="right">
+											<input type="button" class="inputButton" value="글쓰기" id="btnInsert">
+											</div>
 										</td>
 									</tr>
 								</table>

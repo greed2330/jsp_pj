@@ -41,15 +41,11 @@ public class BoardDAOImpl implements BoardDAO{
 	//커넥션풀(DBCP : DataVase Connection Pool 방식) - context.xml에 설정
 	Connection conn = null;
 	PreparedStatement pstmt = null;
-	
+	ResultSet rs = null;
 	//게시글 목록
 	@Override
 	public List<BoardDTO> boardList(int start, int end) {
 		System.out.println("BoardDAOImpl - boardList()");
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		
 		String sql =
 				"SELECT *"
@@ -107,13 +103,7 @@ public class BoardDAOImpl implements BoardDAO{
 	public int boardCnt() {
 		System.out.println("BoardDAOImpl - boardCnt()");
 		String sql = "SELECT COUNT(*) AS cnt FROM MVC_BOARD_TBL";
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
 		int total = 0;
-		
 		
 		try {
 			conn = dataSource.getConnection();
@@ -142,9 +132,6 @@ public class BoardDAOImpl implements BoardDAO{
 	@Override
 	public void plusReadCnt(int board_num) {
 		System.out.println("BoardDAOImpl - plusReadCnt()"); 
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		
 		String sql = "UPDATE mvc_board_tbl "
 				+ "SET b_readcnt = b_readcnt + 1 "
 				+ "WHERE b_num = ?";
@@ -169,10 +156,8 @@ public class BoardDAOImpl implements BoardDAO{
 	//게시글 상세 처리
 	@Override
 	public BoardDTO getBoardDetail(int board_num) {
+		System.out.println("BoardDAOImpl - getBoardDetail()");
 		BoardDTO dto = new BoardDTO();
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		String sql = "SELECT * FROM MVC_BOARD_TBL "
 				+ "WHERE b_num = ?";
 		try {
@@ -206,19 +191,91 @@ public class BoardDAOImpl implements BoardDAO{
 	//게시글 수정삭제 버튼 클릭 시 - 비밀번호 인증처리
 	@Override
 	public int password_chk(int board_num, String password) {
-		return 0;
+		System.out.println("BoardDAOImpl - password_chk()");
+		int selectCnt = 0;
+		//1.
+		String sql = "SELECT count(*) AS cnt FROM MVC_BOARD_TBL "
+				+ "WHERE b_num = ? "
+				+ "AND b_password = ?";
+		
+		try {
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board_num);
+			pstmt.setString(2, password);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				selectCnt = rs.getInt("cnt");
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(conn != null)conn.close();
+				if(pstmt != null)pstmt.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println("selectCnt : "+selectCnt);
+		return selectCnt;
 	}
 
 	//게시글 수정 처리
 	@Override
-	public int updateBoard(BoardDTO dto) {
-		return 0;
+	public void updateBoard(BoardDTO dto) {
+		System.out.println("BoardDAOImpl - updateBoard()");
+		int updateCnt = 0;
+		String sql = "UPDATE MVC_BOARD_TBL "
+				+ "SET b_password = ?, "
+				+ "b_title = ?, "
+				+ "b_content = ? "
+				+ "WHERE b_num = ?";		
+		try {
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getB_password());
+			pstmt.setString(2, dto.getB_title());
+			pstmt.setString(3, dto.getB_content());
+			pstmt.setInt(4, dto.getB_num());
+			updateCnt = pstmt.executeUpdate(); 
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(conn != null)conn.close();
+				if(pstmt != null)pstmt.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println("updateCnt : "+updateCnt);
 	}
 
 	//게시글 삭제 처리
 	@Override
-	public int deleteBoard(int board_num) {
-		return 0;
+	public void deleteBoard(int board_num) {
+		int deleteCnt = 0;
+		String sql = "DELETE FROM MVC_BOARD_TBL "
+				+ "WHERE b_num = ?";		
+		
+		try {
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board_num);
+			deleteCnt = pstmt.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(conn != null)conn.close();
+				if(pstmt != null)pstmt.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println("deleteCnt : "+ deleteCnt);
 	}
 
 	//게시글 작성 처리
