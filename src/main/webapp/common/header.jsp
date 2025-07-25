@@ -24,8 +24,13 @@
 		<ul class="navbar_icons">
 			<li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
 			<li><a href="#"><i class="fa-brands fa-facebook"></i></a></li>
+			<c:if test="${empty sessionScope.sessionID}">
 			<li><a href="${path}/login.do">LOGIN</a></li>
 			<li><a href="${path}/join.do">JOIN</a></li><!-- 서블릿 -->
+			</c:if>
+			<c:if test="${!(empty sessionScope.sessionID)}">
+				<li><a href="${path}/logout.do">LOGOUT</a></li>
+			</c:if>
 			<li><a href="#"><i class="fa-solid fa-cart-shopping"></i></a></li>
 			<li><a href="#"><i class="fa-solid fa-user"></i></a></li>
 		</ul>
