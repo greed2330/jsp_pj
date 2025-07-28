@@ -114,9 +114,29 @@ public class BoardController extends HttpServlet {
 			response.sendRedirect(viewPage);
 			return;
 		}
+		
 		//[댓글 작성 처리]
+		if(url.equals("/comment_insert.bc")) {
+			System.out.println("<<< url ==> /comment_insert.bc >>>");
+			
+			service.commentAddaction(request, response);	// (5)
+			
+			//viewPage = "admin/csCenter/board_detail.jsp";
+			//board_detailAction.jsp의 comment_add()로 복귀 => $.ajax의 콜백함수로 리턴
+		}
+		
+		//[댓글 목록(10)]
+		if(url.equals("/comment_list.bc")) {
+			System.out.println("<<< url ==> /comment_insert.bc >>>");
+			
+			service.commentListAction(request, response);	// (5)
+			
+			viewPage = "admin/csCenter/comment_list.jsp";
+			//board_detailAction.jsp의 comment_list()로 복귀 => $.ajax의 콜백함수로 리턴
+		}
 		
 		//[댓글 목록]
+		
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
 		dispatcher.forward(request, response);

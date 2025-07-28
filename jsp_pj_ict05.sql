@@ -111,3 +111,23 @@ INSERT INTO mvc_board_tbl(b_num, b_title, b_content, b_writer, b_password, b_rea
 
 DELETE FROM MVC_BOARD_TBL WHERE b_num = 991;
 COMMIT;
+
+
+----------- [ 댓글 ] ------------------------------
+
+-- 게시판 댓글테이블
+DROP TABLE mvc_comment_tbl  CASCADE CONSTRAINTS;
+CREATE TABLE mvc_comment_tbl(  
+    c_comment_num     NUMBER(7)  PRIMARY KEY,      -- PK, 댓글 일련번호
+   c_board_num       NUMBER(7)  REFERENCES   mvc_board_tbl(b_num),   -- FK, 게시글 번호
+    c_writer          VARCHAR2(30)  NOT NULL,       -- 작성자
+    c_content         CLOB  NOT NULL,              -- 글내용
+   c_regDate         Date  DEFAULT sysdate       -- 등록일
+);
+
+SELECT * FROM mvc_comment_tbl;
+ -- 댓글 작성페이지
+INSERT INTO mvc_comment_tbl(c_comment_num, c_board_num, c_writer, c_content, c_regDate)
+ VALUES((SELECT NVL(MAX(c_comment_num)+1, 1) FROM mvc_comment_tbl), 991, '작성자1', '글내용1', sysdate);
+COMMIT;  
+------------comment_tbl 테이블--------------

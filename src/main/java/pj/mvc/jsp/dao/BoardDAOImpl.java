@@ -307,14 +307,81 @@ public class BoardDAOImpl implements BoardDAO{
 
 	//댓글 작성 처리
 	@Override
-	public int insertComment(BoardCommentDTO dto) {
-		return 0;
+	public void insertComment(BoardCommentDTO dto) {
+		System.out.println("BoardDAOImpl - insertComment()");
+		String sql = "INSERT INTO mvc_comment_tbl(c_comment_num, c_board_num, c_writer, c_content, c_regDate) "
+				+ "VALUES((SELECT NVL(MAX(c_comment_num)+1, 1) FROM mvc_comment_tbl), ?, ?, ?, sysdate)";
+		try {
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, dto.getC_board_num());
+			pstmt.setString(2, dto.getC_writer());
+			pstmt.setString(3, dto.getC_content());
+			pstmt.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(conn != null)conn.close();
+				if(pstmt != null)pstmt.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	//댓글 목록
 	@Override
 	public List<BoardCommentDTO> commentList(int board_num) {
-		return null;
+		System.out.println("BoardDAOImpl - boardList()");
+		
+		String sql =
+				"SELECT *"
+				+"FROM" 
+				+"	(SELECT A.* "
+				+"		 , rownum AS rn"
+				+"	   FROM (SELECT * FROM mvc_comment_tbl c, mvc_board_tbl b "
+				+"			WHERE b.B_NUM = c.c_board_num "
+				+"			AND b_num = ? "
+				+"		ORDER BY C_COMMENT_NUM DESC) A "
+				+"	) "
+				+"ORDER BY rn DESC";
+		
+		//1. list 생성
+		List<BoardCommentDTO> list = new ArrayList<BoardCommentDTO>();
+		try {
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board_num);
+			
+			rs = pstmt.executeQuery();
+			
+			//데이터가 존재하면
+			while(rs.next()) {
+				//2. dto 생성
+				BoardCommentDTO dto = new BoardCommentDTO();
+				//3. dto에 1건의 rs 게시글 정보를 담는다.
+				dto.setC_comment_num(rs.getInt("rn"));
+				dto.setC_board_num(rs.getInt("c_board_num"));
+				dto.setC_writer(rs.getString("c_writer"));
+				dto.setC_content(rs.getString("c_content"));
+				dto.setC_regDate(rs.getDate("c_regDate"));
+				
+				//4.list에 dto 추가
+				list.add(dto);
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(conn != null)conn.close();
+				if(pstmt != null)pstmt.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
 	}
 	
 }
