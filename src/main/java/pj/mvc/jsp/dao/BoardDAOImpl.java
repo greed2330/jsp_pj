@@ -48,13 +48,14 @@ public class BoardDAOImpl implements BoardDAO{
 		System.out.println("BoardDAOImpl - boardList()");
 		
 		String sql =
-				"SELECT *"
-				+"FROM" 
+				"SELECT * "
+				+"FROM " 
 				+"	(SELECT A.* "
 				+"		 , rownum AS rn"
 				+"	   FROM (SELECT * FROM mvc_board_tbl"
-				+"	ORDER BY B_NUM DESC) A"
-				+"	)"
+				+ "			   WHERE b_show = 'Y' "
+				+"				ORDER BY B_NUM DESC) A "
+				+"	) "
 				+"WHERE rn BETWEEN ? AND ?";
 		
 		//1. list 생성
@@ -258,8 +259,12 @@ public class BoardDAOImpl implements BoardDAO{
 	public void deleteBoard(int board_num) {
 		System.out.println("BoardDAOImpl - deleteBoard()");
 		int deleteCnt = 0;
-		String sql = "DELETE FROM MVC_BOARD_TBL "
-				+ "WHERE b_num = ?";		
+//		String sql = "DELETE FROM MVC_BOARD_TBL "
+//				+ "WHERE b_num = ?";		
+		String sql = "UPDATE mvc_board_tbl "
+				+ "		SET b_show = 'N' "
+				+ "		WHERE b_num = ?";
+		
 		
 		try {
 			conn = dataSource.getConnection();

@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/common/setting.jsp" %>
 <!DOCTYPE html>
 <html>
@@ -15,12 +14,6 @@
 <link rel="stylesheet" href="${path}/resources/css/common/footer.css">
 <link rel="stylesheet" href="${path}/resources/css/admin/ad_boardList.css">
 
-<!-- js -->
-<script src="https://kit.fontawesome.com/657537baae.js" crossorigin="anonymous"></script>
-
-<!-- (3-3-2). 자바스크립트 소스 연결 -->
-<!-- defer : html을 다 읽은 후에 자바스크립트를 실행한다. 페이지가 모두 로드된 후에 실행된다. -->
-<script src="${path}/resources/js/common/main.js" defer></script>
 
 </head>
 <body>
