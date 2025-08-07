@@ -8,6 +8,7 @@ public class BoardCommentDTO {
 	private String c_writer;
 	private String c_content;
 	private Date c_regDate;
+	
 	public BoardCommentDTO() {
 		super();
 		// TODO Auto-generated constructor stub

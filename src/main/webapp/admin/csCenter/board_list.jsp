@@ -61,6 +61,7 @@
 										<th>글번호</th>
 										<th>작성자</th>
 										<th>글제목</th>
+										<th>댓글</th>
 										<th>작성일</th>
 										<th>조회수</th>
 									</tr>
@@ -70,6 +71,7 @@
 										<td>${dto.b_num}</td>
 										<td>${dto.b_writer}</td>
 										<td><a href="${path}/board_detailAction.bc?b_num=${dto.b_num}">${dto.b_title}</a></td>
+										<td>${dto.b_comment_count}</td>
 										<td>${dto.b_regdate}</td>
 										<td>${dto.b_readcnt}</td>
 									</tr>

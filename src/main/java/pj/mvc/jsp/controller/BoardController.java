@@ -125,7 +125,7 @@ public class BoardController extends HttpServlet {
 			//board_detailAction.jsp의 comment_add()로 복귀 => $.ajax의 콜백함수로 리턴
 		}
 		
-		//[댓글 목록(10)]
+		//[댓글 목록]
 		if(url.equals("/comment_list.bc")) {
 			System.out.println("<<< url ==> /comment_insert.bc >>>");
 			
@@ -134,8 +134,6 @@ public class BoardController extends HttpServlet {
 			viewPage = "admin/csCenter/comment_list.jsp";
 			//board_detailAction.jsp의 comment_list()로 복귀 => $.ajax의 콜백함수로 리턴
 		}
-		
-		//[댓글 목록]
 		
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);

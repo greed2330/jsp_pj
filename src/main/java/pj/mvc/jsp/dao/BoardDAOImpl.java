@@ -58,6 +58,7 @@ public class BoardDAOImpl implements BoardDAO{
 				+"	) "
 				+"WHERE rn BETWEEN ? AND ?";
 		
+		String sql2 = "UPDATE MVC_BOARD_TBL mbt	SET B_COMMENT_COUNT = (SELECT COUNT(*) FROM mvc_comment_tbl c WHERE c.c_board_num = mbt.B_NUM)";
 		//1. list 생성
 		List<BoardDTO> list = new ArrayList<BoardDTO>();
 		try {
@@ -68,6 +69,7 @@ public class BoardDAOImpl implements BoardDAO{
 			
 			rs = pstmt.executeQuery();
 			
+			pstmt = conn.prepareStatement(sql);
 			//데이터가 존재하면
 			while(rs.next()) {
 				//2. dto 생성
@@ -103,7 +105,9 @@ public class BoardDAOImpl implements BoardDAO{
 	@Override
 	public int boardCnt() {
 		System.out.println("BoardDAOImpl - boardCnt()");
-		String sql = "SELECT COUNT(*) AS cnt FROM MVC_BOARD_TBL";
+		String sql = "SELECT COUNT(*) AS cnt "
+				+ "WHERE b_show='Y' "
+				+ "FROM MVC_BOARD_TBL";
 		int total = 0;
 		
 		try {
@@ -189,6 +193,7 @@ public class BoardDAOImpl implements BoardDAO{
 		return dto;
 	}
 
+	
 	//게시글 수정삭제 버튼 클릭 시 - 비밀번호 인증처리
 	@Override
 	public int password_chk(int board_num, String password) {
@@ -198,6 +203,7 @@ public class BoardDAOImpl implements BoardDAO{
 		String sql = "SELECT count(*) AS cnt FROM MVC_BOARD_TBL "
 				+ "WHERE b_num = ? "
 				+ "AND b_password = ?";
+		
 		
 		try {
 			conn = dataSource.getConnection();
@@ -315,7 +321,13 @@ public class BoardDAOImpl implements BoardDAO{
 	public void insertComment(BoardCommentDTO dto) {
 		System.out.println("BoardDAOImpl - insertComment()");
 		String sql = "INSERT INTO mvc_comment_tbl(c_comment_num, c_board_num, c_writer, c_content, c_regDate) "
-				+ "VALUES((SELECT NVL(MAX(c_comment_num)+1, 1) FROM mvc_comment_tbl), ?, ?, ?, sysdate)";
+				+ "VALUES((SELECT NVL(MAX(c_comment_num)+1, 1) FROM mvc_comment_tbl), ?, ?, ?, sysdate)"
+				+ "";
+				
+		String sql2 = "UPDATE MVC_BOARD_TBL mbt SET B_COMMENT_COUNT = " 
+			    +"(SELECT COUNT(*) " 
+			     +"FROM mvc_comment_tbl c "
+			     +"WHERE c.c_board_num = mbt.B_NUM)";
 		try {
 			conn = dataSource.getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -323,6 +335,8 @@ public class BoardDAOImpl implements BoardDAO{
 			pstmt.setString(2, dto.getC_writer());
 			pstmt.setString(3, dto.getC_content());
 			pstmt.executeUpdate();
+			
+			pstmt = conn.prepareStatement(sql2);
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}finally {

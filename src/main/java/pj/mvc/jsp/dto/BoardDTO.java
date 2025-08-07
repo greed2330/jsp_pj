@@ -14,7 +14,6 @@ public class BoardDTO {
 	
 	public BoardDTO() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public BoardDTO(int b_num, String b_title, String b_content, String b_writer, String b_password, int b_readcnt,
